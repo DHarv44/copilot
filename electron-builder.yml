@@ -1,0 +1,10 @@
+appId: com.example.msfshello
+productName: MSFS Electron Hello
+files:
+  - "src/**"
+extraMetadata:
+  main: "src/main.js"
+directories:
+  output: "dist"
+win:
+  target: nsis

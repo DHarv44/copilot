@@ -1,0 +1,21 @@
+{
+  "name": "msfs-electron-hello",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hello World Electron ready for node-simconnect",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "electron .",
+    "start": "electron .",
+    "pack": "electron-builder"
+  },
+  "dependencies": {
+    "electron": "31.3.0",
+    "node-simconnect": "^4.0.0"
+  },
+  "devDependencies": {
+    "electron-builder": "24.13.3",
+    "electron-reloader": "^1.2.3",
+    "npm-run-all": "4.1.5"
+  }
+}
