@@ -2,8 +2,9 @@ appId: com.example.msfshello
 productName: MSFS Electron Hello
 files:
   - "src/**"
+  - "config/**"
 extraMetadata:
-  main: "src/main.js"
+  main: "src/main/main.js"
 directories:
   output: "dist"
 win:

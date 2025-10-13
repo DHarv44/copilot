@@ -1,0 +1,14 @@
+{
+  "simconnect": {
+    "sampleRate": "SECOND",
+    "reconnectDelay": 2000
+  },
+  "ui": {
+    "theme": "dark",
+    "alwaysOnTop": false
+  },
+  "console": {
+    "maxMessages": 5000,
+    "autoScroll": true
+  }
+}

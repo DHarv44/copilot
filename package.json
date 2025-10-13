@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Hello World Electron ready for node-simconnect",
-  "main": "src/main.js",
+  "main": "src/main/main.js",
   "scripts": {
     "dev": "electron .",
     "start": "electron .",

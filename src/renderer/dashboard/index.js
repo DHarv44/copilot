@@ -13,8 +13,16 @@ document.getElementById('app').append(iasEl, altEl);
 const iasVal = document.getElementById('ias');
 const altVal = document.getElementById('alt');
 
-if (window.sim && typeof window.sim.onUpdate === 'function') {
-  window.sim.onUpdate((msg) => {
+if (window.api) {
+  // Handle history (on load)
+  window.api.onHistory((history) => {
+    history.forEach(processMsg);
+  });
+
+  // Handle live messages
+  window.api.onBus(processMsg);
+
+  function processMsg(msg) {
     if (!msg || typeof msg !== 'object') return;
     if (msg.type === 'status') {
       statusEl.textContent = msg.connected ? 'Connected' : 'Disconnected';
@@ -27,7 +35,7 @@ if (window.sim && typeof window.sim.onUpdate === 'function') {
       if (typeof msg.ias === 'number') iasVal.textContent = msg.ias.toFixed(1) + ' kt';
       if (typeof msg.alt === 'number') altVal.textContent = Math.round(msg.alt).toLocaleString() + ' ft';
     }
-  });
+  }
 } else {
   statusEl.textContent = 'Preload not available';
   statusEl.style.color = '#e74c3c';

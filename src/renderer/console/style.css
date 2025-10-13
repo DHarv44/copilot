@@ -1,0 +1,96 @@
+body {
+  margin: 0;
+  font: 12px 'Consolas', 'Monaco', monospace;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #252526;
+  border-bottom: 1px solid #3e3e42;
+}
+
+.toolbar h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #cccccc;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+button {
+  padding: 4px 12px;
+  font-size: 11px;
+  background: #3e3e42;
+  color: #cccccc;
+  border: 1px solid #555;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #4e4e52;
+}
+
+button:active {
+  background: #2e2e32;
+}
+
+#filter {
+  padding: 4px 8px;
+  font-size: 11px;
+  background: #3c3c3c;
+  color: #cccccc;
+  border: 1px solid #555;
+  border-radius: 2px;
+  width: 200px;
+}
+
+#filter:focus {
+  outline: none;
+  border-color: #007acc;
+}
+
+#log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.msg {
+  padding: 2px 0;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.msg-status { color: #4ec9b0; }
+.msg-aircraft { color: #dcdcaa; }
+.msg-sample { color: #9cdcfe; }
+.msg-default { color: #d4d4d4; }
+
+.msg-time {
+  color: #858585;
+  margin-right: 8px;
+}
+
+.msg-seq {
+  color: #6a9955;
+  margin-right: 8px;
+}
