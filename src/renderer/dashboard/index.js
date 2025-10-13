@@ -1,3 +1,18 @@
+// Events config - inline for now
+const EVENTS = {
+  "version": "1.0.0",
+  "k": {
+    "AP":   { "on": "AP_MASTER",               "off": "AP_MASTER",               "simvar": "AUTOPILOT MASTER" },
+    "FD":   { "on": "FLIGHT_DIRECTOR_ON",      "off": "FLIGHT_DIRECTOR_OFF",     "simvar": "AUTOPILOT FLIGHT DIRECTOR ACTIVE" },
+    "HDG":  { "on": "AP_HDG_HOLD_ON",          "off": "AP_HDG_HOLD_OFF",         "simvar": "AUTOPILOT HEADING LOCK" },
+    "NAV":  { "on": "AP_NAV1_HOLD_ON",         "off": "AP_NAV1_HOLD_OFF",        "simvar": "AUTOPILOT NAV SELECTED" },
+    "APR":  { "on": "AP_APR_HOLD_ON",          "off": "AP_APR_HOLD_OFF",         "simvar": "AUTOPILOT APPROACH ACTIVE" },
+    "ALT":  { "on": "AP_ALT_HOLD_ON",          "off": "AP_ALT_HOLD_OFF",         "simvar": "AUTOPILOT ALTITUDE LOCK" },
+    "VS":   { "on": "AP_VS_HOLD",              "off": "AP_VS_HOLD",              "simvar": "AUTOPILOT VERTICAL HOLD" },
+    "FLC":  { "on": "FLIGHT_LEVEL_CHANGE_ON",  "off": "FLIGHT_LEVEL_CHANGE_OFF", "simvar": "AUTOPILOT FLIGHT LEVEL CHANGE" }
+  }
+};
+
 const statusEl = document.getElementById('status');
 const iasVal = document.getElementById('ias');
 const altVal = document.getElementById('alt');
@@ -10,8 +25,24 @@ const avionicsBadges = document.getElementById('avionics-badges');
 const autopilotSection = document.getElementById('autopilot-section');
 const apBadges = document.getElementById('ap-badges');
 const profileStatus = document.getElementById('profile-status');
+const apBar = document.getElementById('ap-bar');
 
 statusEl.textContent = 'Waiting for sim…';
+
+function sendKey(key, turnOn) {
+  const def = EVENTS.k[key];
+  if (!def) return;
+  const event = turnOn ? def.on : (def.off || def.on);
+  const id = window.cmd.send({ type: 'k', event });
+  console.debug('→ K', key, turnOn ? 'ON' : 'OFF', event, id);
+}
+
+apBar?.addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-key]');
+  if (!btn) return;
+  const active = btn.classList.contains('active');
+  sendKey(btn.dataset.key, !active);
+});
 
 if (window.api) {
   // Handle history (on load)
@@ -126,3 +157,18 @@ if (window.api) {
   statusEl.textContent = 'Preload not available';
   statusEl.style.color = '#e74c3c';
 }
+
+window.sim?.onUpdate(msg => {
+  if (msg.type !== 'apState') return;
+  for (const [key, def] of Object.entries(EVENTS.k)) {
+    const el = apBar?.querySelector(`[data-key="${key}"]`);
+    if (!el || !def.simvar) continue;
+
+    const isActive = !!msg.flags[def.simvar];
+    el.classList.toggle('active', isActive);
+  }
+});
+
+window.cmd?.onAck(({ id, ok, err }) => {
+  if (!ok) console.warn('K-ack failed', id, err);
+});

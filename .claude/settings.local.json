@@ -14,7 +14,10 @@
       "Bash(npm start)",
       "Bash(node:*)",
       "Bash(npx electron:*)",
-      "Read(//d/Steam/steamapps/common/MFS/Official/**)"
+      "Read(//d/Steam/steamapps/common/MFS/Official/**)",
+      "Bash(npm install:*)",
+      "Read(//c/Users/**)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

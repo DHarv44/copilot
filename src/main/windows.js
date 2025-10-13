@@ -19,15 +19,33 @@ function createDashboardWindow() {
     height: bounds.height,
     x: bounds.x,
     y: bounds.y,
-    autoHideMenuBar: true,
+    autoHideMenuBar: false,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
-      preload: path.join(__dirname, '../preload/preload.js')
+      preload: path.join(__dirname, '../preload/preload-simple.js')
     }
   });
 
   dashboardWin.loadFile(path.join(__dirname, '../renderer/dashboard/index.html'));
+
+  // Log ALL renderer console messages (including errors)
+  const log = require('./logger');
+  dashboardWin.webContents.on('console-message', (event, level, message, line, sourceId) => {
+    const levelMap = { 0: 'log', 1: 'warn', 2: 'error' };
+    const logLevel = levelMap[level] || 'log';
+    log[logLevel](`[renderer] ${sourceId}:${line} ${message}`);
+  });
+
+  // Capture preload errors
+  dashboardWin.webContents.on('preload-error', (event, preloadPath, error) => {
+    log.error(`[renderer] Preload error (${preloadPath}):`, error);
+  });
+
+  // Capture crashed renderer
+  dashboardWin.webContents.on('render-process-gone', (event, details) => {
+    log.error(`[renderer] Process gone:`, details);
+  });
 
   dashboardWin.on('close', () => {
     const b = dashboardWin.getBounds();
@@ -38,7 +56,9 @@ function createDashboardWindow() {
 
   // Send history on load
   dashboardWin.webContents.on('did-finish-load', () => {
-    dashboardWin.webContents.send('bus:history', bus.history());
+    const h = bus.history();
+    console.log('[windows] dashboard loaded, sending history with', h.length, 'messages');
+    dashboardWin.webContents.send('bus:history', h);
   });
 
   return dashboardWin;
@@ -57,11 +77,11 @@ function createConsoleWindow() {
     height: bounds.height,
     x: bounds.x,
     y: bounds.y,
-    autoHideMenuBar: true,
+    autoHideMenuBar: false,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
-      preload: path.join(__dirname, '../preload/preload.js')
+      preload: path.join(__dirname, '../preload/preload-simple.js')
     }
   });
 

@@ -116,3 +116,33 @@ strong { color: #7ee787; }
   color: #7ee787;
   font-family: 'Courier New', monospace;
 }
+
+.ap-bar {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.ap-bar button {
+  padding: 8px 16px;
+  background: #1a1d24;
+  border: 1px solid #2d3139;
+  border-radius: 4px;
+  color: #888;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ap-bar button:hover {
+  background: #22252e;
+  border-color: #3d4149;
+}
+
+.ap-bar button.active {
+  background: #2d5c3e;
+  border-color: #3d7c5e;
+  color: #00ff00;
+  outline: 2px solid #4caf50;
+}

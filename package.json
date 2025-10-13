@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "electron": "31.3.0",
+    "electron-log": "^5.4.3",
     "node-simconnect": "^4.0.0"
   },
   "devDependencies": {

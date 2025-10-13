@@ -12,6 +12,12 @@ function publish(msg) {
   buffer.push(envelope);
   if (buffer.length > BUFFER_SIZE) buffer.shift();
 
+  // Only log non-sample messages to reduce spam
+  if (msg.type !== 'sample') {
+    const log = require('./logger');
+    log.log('[bus] publish:', msg.type, 'to', BrowserWindow.getAllWindows().length, 'windows');
+  }
+
   // Fan out to all windows
   BrowserWindow.getAllWindows().forEach((win) => {
     if (!win.isDestroyed()) {
