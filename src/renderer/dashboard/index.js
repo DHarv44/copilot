@@ -8,7 +8,7 @@ const manufacturer = document.getElementById('manufacturer');
 const icao = document.getElementById('icao');
 const avionicsBadges = document.getElementById('avionics-badges');
 const autopilotSection = document.getElementById('autopilot-section');
-const apModes = document.getElementById('ap-modes');
+const apBadges = document.getElementById('ap-badges');
 const profileStatus = document.getElementById('profile-status');
 
 statusEl.textContent = 'Waiting for sim…';
@@ -62,31 +62,44 @@ if (window.api) {
 
   function updateAircraftProfile(profile) {
     aircraftCard.style.display = 'block';
-    aircraftTitle.textContent = profile.title || '—';
-    manufacturer.textContent = profile.manufacturer || '—';
-    icao.textContent = profile.icao || '—';
+    aircraftTitle.textContent = profile.title || 'Unresolved';
+    manufacturer.textContent = profile.manufacturer === 'unknown' ? 'Unresolved' : (profile.manufacturer || 'Unresolved');
+    icao.textContent = profile.icao === 'unknown' ? 'Unresolved' : (profile.icao || 'Unresolved');
 
-    // Avionics badges - only show what we actually detect
+    // Panel Inventory - show gauge packages
     avionicsBadges.innerHTML = '';
-    if (profile.avionics?.g1000) addBadge('G1000', true);
-    if (profile.avionics?.g3000) addBadge('G3000', true);
-    if (profile.avionics?.g3x) addBadge('G3X', true);
-    if (profile.avionics?.gtnxi) addBadge('GTNxi', true);
 
-    // If nothing detected, say so
-    if (!profile.avionics || (!profile.avionics.g1000 && !profile.avionics.g3000 && !profile.avionics.g3x && !profile.avionics.gtnxi)) {
-      avionicsBadges.innerHTML = '<span class="unknown">Unknown</span>';
+    if (profile.panel?.gauges && profile.panel.gauges.length > 0) {
+      // Group gauges by first two path segments to show packages
+      const packages = {};
+      for (const gauge of profile.panel.gauges) {
+        const parts = gauge.path.split('/');
+        const pkg = parts.slice(0, 2).join('/');
+        packages[pkg] = (packages[pkg] || 0) + 1;
+      }
+
+      // Display unique packages
+      const pkgList = Object.entries(packages)
+        .sort((a, b) => b[1] - a[1]) // Sort by count descending
+        .map(([pkg, count]) => `${pkg} (${count})`)
+        .join(', ');
+
+      avionicsBadges.innerHTML = `<span class="inventory">${pkgList}</span>`;
+    } else {
+      avionicsBadges.innerHTML = '<span class="unresolved">No gauges found</span>';
     }
 
-    // Autopilot
-    if (profile.autopilot?.available) {
+    // Autopilot - tri-state
+    if (profile.autopilot?.available === 'true') {
       autopilotSection.style.display = 'block';
-      const modes = profile.autopilot.modes || [];
-      apModes.textContent = modes.length > 0 ? modes.join(' · ') : 'Basic AP';
 
-      if (profile.autopilot.fd) {
-        addBadge('FD', true);
-      }
+      // Badges for FD and AP
+      apBadges.innerHTML = '';
+      if (profile.autopilot.fd === 'true') addBadge('FD', 'true', apBadges);
+      addBadge('AP', 'true', apBadges);
+    } else if (profile.autopilot?.available === 'unknown') {
+      autopilotSection.style.display = 'block';
+      apBadges.innerHTML = '<span class="unresolved">Unresolved</span>';
     } else {
       autopilotSection.style.display = 'none';
     }
@@ -97,11 +110,17 @@ if (window.api) {
     console.log('[dashboard] profile updated:', profile);
   }
 
-  function addBadge(label, active) {
+  function addBadge(label, state, container) {
     const badge = document.createElement('span');
-    badge.className = 'badge' + (active ? '' : ' inactive');
+    if (state === 'true') {
+      badge.className = 'badge';
+    } else if (state === 'unknown') {
+      badge.className = 'badge unresolved';
+    } else {
+      badge.className = 'badge inactive';
+    }
     badge.textContent = label;
-    avionicsBadges.appendChild(badge);
+    (container || avionicsBadges).appendChild(badge);
   }
 } else {
   statusEl.textContent = 'Preload not available';

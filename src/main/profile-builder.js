@@ -267,19 +267,29 @@ function detectProfile(title, metadata) {
 }
 
 function buildProfile(title, metadata, aircraftData) {
-  // Use ui_manufacturer + ui_type for display name, not livery title
+  // Deterministic identity from base [GENERAL]
   const displayName = aircraftData.manufacturer && aircraftData.uiType
     ? `${aircraftData.manufacturer} ${aircraftData.uiType}`
-    : title;
+    : 'Unresolved';
 
   const profile = {
+    identity: {
+      variantTitle: title,
+      icao_type_designator: aircraftData.icao || 'unknown',
+      icao_manufacturer: aircraftData.manufacturer || 'unknown',
+      icao_model: aircraftData.uiType || 'unknown',
+      source: {
+        variantDir: aircraftData.dir,
+        baseDir: aircraftData.baseDir || 'unknown',
+        aircraftCfg: aircraftData.aircraftCfgPath
+      }
+    },
     title: displayName,
-    icao: aircraftData.icao || '',  // Use icao_type_designator from aircraft.cfg, NOT ATC ID
-    manufacturer: aircraftData.manufacturer || '',
-    uiType: aircraftData.uiType || '',
-    avionics: { g1000: false, g3000: false, g3x: false, gtnxi: false },
-    autopilot: { available: false, fd: false, modes: [] },
-    radios: { com: 0, nav: 0, adf: false, dme: false },
+    icao: aircraftData.icao || 'unknown',
+    manufacturer: aircraftData.manufacturer || 'unknown',
+    uiType: aircraftData.uiType || 'unknown',
+    panel: { gauges: [], aliasFollowed: false, panelDir: 'unknown' },
+    autopilot: { available: 'unknown', fd: 'unknown', resolvedBy: 'unresolved' },
     sources: {
       packageDir: path.dirname(path.dirname(aircraftData.dir)),
       aircraftCfg: aircraftData.aircraftCfgPath
@@ -300,10 +310,23 @@ function buildProfile(title, metadata, aircraftData) {
 
   if (fs.existsSync(panelDir)) {
     console.log('[profile] parsing panel at:', panelDir);
-    profile.avionics = parsePanel(panelDir);
-    profile.sources.panelDir = panelDir;
+    const panelCfgPath = path.join(panelDir, 'panel.cfg');
+
+    if (fs.existsSync(panelCfgPath)) {
+      // Check for alias first
+      const aliasDir = followPanelAlias(panelDir);
+      if (aliasDir && aliasDir !== panelDir) {
+        console.log('[profile] following panel alias to:', aliasDir);
+        panelDir = aliasDir;
+      }
+
+      profile.identity.source.panelDir = panelDir;
+      profile.panel = parsePanel(panelDir);
+    } else {
+      console.log('[profile] panel.cfg not found at:', panelCfgPath);
+    }
   } else {
-    console.log('[profile] panel not found at:', panelDir);
+    console.log('[profile] panel directory not found at:', panelDir);
   }
 
   // Parse systems from base
@@ -313,8 +336,11 @@ function buildProfile(title, metadata, aircraftData) {
 
   if (fs.existsSync(systemsCfgPath)) {
     console.log('[profile] parsing systems at:', systemsCfgPath);
-    profile.autopilot = parseAutopilot(systemsCfgPath);
-    profile.sources.systemsCfg = systemsCfgPath;
+    profile.identity.source.systemsCfg = systemsCfgPath;
+    const apResult = parseAutopilot(systemsCfgPath);
+    profile.autopilot.available = apResult.available;
+    profile.autopilot.fd = apResult.fd;
+    profile.autopilot.resolvedBy = apResult.resolvedBy;
   } else {
     console.log('[profile] systems.cfg not found at:', systemsCfgPath);
   }
@@ -322,51 +348,111 @@ function buildProfile(title, metadata, aircraftData) {
   return profile;
 }
 
+function followPanelAlias(panelDir) {
+  try {
+    const panelCfgPath = path.join(panelDir, 'panel.cfg');
+    if (!fs.existsSync(panelCfgPath)) return null;
+
+    const content = fs.readFileSync(panelCfgPath, 'utf8');
+    const lines = content.split('\n');
+
+    for (const line of lines) {
+      const stripped = line.split(';')[0].trim();
+      if (stripped.toLowerCase().startsWith('alias=')) {
+        const aliasPath = stripped.substring(6).trim().replace(/^["']|["']$/g, '');
+        const resolvedPath = path.join(panelDir, '..', aliasPath);
+        if (fs.existsSync(resolvedPath)) {
+          return resolvedPath;
+        }
+      }
+    }
+  } catch (err) {
+    console.error('[profile] followPanelAlias error:', err);
+  }
+  return null;
+}
+
+function parsePanelCfg(text) {
+  const sections = {};
+  let cur = null;
+  for (const lineRaw of text.split(/\r?\n/)) {
+    const line = lineRaw.replace(/;.*$/, '').trim();
+    if (!line) continue;
+    const h = line.match(/^\[(.+?)\]$/);
+    if (h) { cur = h[1]; sections[cur] = sections[cur] || []; continue; }
+    if (!cur) continue;
+    const m = line.match(/^\s*(?:gauge|htmlgauge|painting)(\d+)\s*=\s*([^,;]+)/i);
+    if (m) sections[cur].push(m[2].trim());
+    const a = line.match(/^\s*alias\s*=\s*(.+)$/i);
+    if (a) sections[cur].push('ALIAS:' + a[1].trim());
+  }
+  return sections;
+}
+
+function normalizeGaugePath(p) {
+  if (p.startsWith('ALIAS:')) return p;
+  return p.replace(/\\/g, '/').toLowerCase();
+}
+
 function parsePanel(panelDir) {
-  const result = { g1000: false, g3000: false, g3x: false, gtnxi: false };
+  const panel = {
+    gauges: [],
+    aliasFollowed: false,
+    panelDir: panelDir
+  };
 
   try {
     const panelCfgPath = path.join(panelDir, 'panel.cfg');
     if (!fs.existsSync(panelCfgPath)) {
-      console.log('[profile] panel.cfg not found at:', panelCfgPath);
-      return result;
+      console.log('[profile] UNRESOLVED: panel.cfg not found at:', panelCfgPath);
+      return panel;
     }
 
-    const content = fs.readFileSync(panelCfgPath, 'utf8');
+    let sections = parsePanelCfg(fs.readFileSync(panelCfgPath, 'utf8'));
 
-    // Strip comments (;...)
-    const stripped = content.split('\n').map(line => {
-      const idx = line.indexOf(';');
-      return idx >= 0 ? line.substring(0, idx) : line;
-    }).join('\n');
+    // Check for alias and follow one hop
+    const alias = Object.values(sections).flat().find(x => x.startsWith('ALIAS:'));
+    if (alias) {
+      const aliasPath = alias.slice(6);
+      const aliasDir = path.resolve(panelDir, '..', aliasPath);
+      const aliasCfgPath = path.join(aliasDir, 'panel.cfg');
+      if (fs.existsSync(aliasCfgPath)) {
+        console.log('[profile] following panel alias to:', aliasDir);
+        sections = parsePanelCfg(fs.readFileSync(aliasCfgPath, 'utf8'));
+        panelDir = aliasDir;
+        panel.aliasFollowed = true;
+        panel.panelDir = panelDir;
+      }
+    }
 
-    // Strong token matching - case insensitive, priority order
-    const g3000 = /wtg3000/i.test(stripped);
-    const g1000 = !g3000 && /(as1000_(pfd|mfd)|wtg1000|workingtitle.*g1000)/i.test(stripped);
-    const g3x = !g3000 && !g1000 && /wtg3x/i.test(stripped);
-    const gtnxi = /(tds.*gtnxi|pms50.*gtn(650|750)|pms50_gtn)/i.test(stripped);
+    // Extract all gauges from VCockpit sections
+    for (const [sec, arr] of Object.entries(sections)) {
+      if (!/^VCockpit/i.test(sec)) continue;
+      for (const g of arr) {
+        if (g.startsWith('ALIAS:')) continue;
+        panel.gauges.push({ vc: sec, path: normalizeGaugePath(g) });
+      }
+    }
 
-    result.g1000 = g1000;
-    result.g3000 = g3000;
-    result.g3x = g3x;
-    result.gtnxi = gtnxi;
-
-    console.log('[profile] avionics detected:', result);
+    console.log('[profile] PANEL INVENTORY:', panel.gauges.length, 'gauges');
+    panel.gauges.forEach(g => console.log('  -', g.vc, ':', g.path));
   } catch (err) {
     console.error('[profile] parsePanel error:', err);
   }
 
-  return result;
+  return panel;
 }
 
 function parseAutopilot(systemsCfgPath) {
-  const ap = { available: false, fd: false, modes: [] };
+  const ap = { available: 'unknown', fd: 'unknown', resolvedBy: 'unresolved' };
 
   try {
     const content = fs.readFileSync(systemsCfgPath, 'utf8');
     const lines = content.split('\n');
 
     let inAutopilot = false;
+    let foundApAvailable = false;
+    let foundFdAvailable = false;
 
     for (const line of lines) {
       const trimmed = line.trim().toLowerCase();
@@ -384,24 +470,23 @@ function parseAutopilot(systemsCfgPath) {
       if (inAutopilot && trimmed.includes('=')) {
         const [key, value] = trimmed.split('=').map(s => s.trim());
 
-        if (key === 'autopilot_available' && value === '1') ap.available = true;
-        if (key === 'flight_director_available' && value === '1') ap.fd = true;
-
-        // Modes
-        if (value === '1') {
-          if (key.includes('heading')) ap.modes.push('HDG');
-          if (key.includes('nav')) ap.modes.push('NAV');
-          if (key.includes('approach')) ap.modes.push('APR');
-          if (key.includes('altitude')) ap.modes.push('ALT');
-          if (key.includes('vertical_speed')) ap.modes.push('VS');
-          if (key.includes('flc') || key.includes('airspeed')) ap.modes.push('FLC');
-          if (key.includes('vnav')) ap.modes.push('VNAV');
+        if (key === 'autopilot_available') {
+          foundApAvailable = true;
+          ap.available = value === '1' ? 'true' : 'false';
+        }
+        if (key === 'flight_director_available') {
+          foundFdAvailable = true;
+          ap.fd = value === '1' ? 'true' : 'false';
         }
       }
     }
 
-    // Deduplicate
-    ap.modes = [...new Set(ap.modes)];
+    if (foundApAvailable || foundFdAvailable) {
+      ap.resolvedBy = 'files';
+      console.log('[profile] AUTOPILOT from systems.cfg:', ap);
+    } else {
+      console.log('[profile] UNRESOLVED: no autopilot_available or flight_director_available keys found');
+    }
   } catch (err) {
     console.error('[profile] parseAutopilot error:', err);
   }

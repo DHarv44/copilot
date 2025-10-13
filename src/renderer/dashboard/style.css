@@ -90,3 +90,29 @@ strong { color: #7ee787; }
   color: #888;
   font-style: italic;
 }
+
+.unresolved {
+  font-size: 11px;
+  color: #f39c12;
+  font-style: italic;
+  background: #2d2416;
+  border-color: #4a3a26;
+}
+
+.badge.unresolved {
+  background: #2d2416;
+  color: #f39c12;
+  border-color: #4a3a26;
+}
+
+.none {
+  font-size: 11px;
+  color: #888;
+  font-style: italic;
+}
+
+.inventory {
+  font-size: 11px;
+  color: #7ee787;
+  font-family: 'Courier New', monospace;
+}
