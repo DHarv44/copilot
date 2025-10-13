@@ -1,14 +1,22 @@
-const { app } = require('electron');
+const { app: electronApp } = require('electron');
 const fs = require('fs');
 const path = require('path');
 
-const SETTINGS_FILE = path.join(app.getPath('userData'), 'settings.json');
+let SETTINGS_FILE = null;
 let cache = {};
+
+function getSettingsFile() {
+  if (!SETTINGS_FILE) {
+    SETTINGS_FILE = path.join(electronApp.getPath('userData'), 'settings.json');
+  }
+  return SETTINGS_FILE;
+}
 
 function load() {
   try {
-    if (fs.existsSync(SETTINGS_FILE)) {
-      const raw = fs.readFileSync(SETTINGS_FILE, 'utf8');
+    const file = getSettingsFile();
+    if (fs.existsSync(file)) {
+      const raw = fs.readFileSync(file, 'utf8');
       cache = JSON.parse(raw);
     }
   } catch (err) {
@@ -18,7 +26,8 @@ function load() {
 
 function save() {
   try {
-    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(cache, null, 2), 'utf8');
+    const file = getSettingsFile();
+    fs.writeFileSync(file, JSON.stringify(cache, null, 2), 'utf8');
   } catch (err) {
     console.error('[settings] save failed', err);
   }
@@ -33,7 +42,4 @@ function set(key, value) {
   save();
 }
 
-// Load on require
-load();
-
-module.exports = { get, set };
+module.exports = { get, set, load };

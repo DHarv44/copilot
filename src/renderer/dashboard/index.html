@@ -7,9 +7,42 @@
 </head>
 <body>
   <div id="app">
-    <h1>MSFS Hello</h1>
-    <div class="row"><span>Status:</span> <strong id="status">—</strong></div>
-    <div class="row"><span>Aircraft:</span> <strong id="aircraft">—</strong></div>
+    <h1>MSFS Dashboard</h1>
+
+    <div class="card">
+      <h2>Connection</h2>
+      <div class="row"><span>Status:</span> <strong id="status">—</strong></div>
+    </div>
+
+    <div class="card" id="aircraft-card">
+      <h2>Aircraft</h2>
+      <div class="aircraft-title" id="aircraft-title">—</div>
+      <div class="aircraft-meta">
+        <span id="manufacturer">—</span>
+        <span class="divider">|</span>
+        <span>ICAO: <span id="icao">—</span></span>
+      </div>
+
+      <div class="section">
+        <div class="label">Avionics:</div>
+        <div class="badges" id="avionics-badges"></div>
+      </div>
+
+      <div class="section" id="autopilot-section" style="display:none;">
+        <div class="label">Autopilot:</div>
+        <div class="ap-modes" id="ap-modes"></div>
+      </div>
+
+      <div class="section" id="profile-status">
+        <div class="spinner">Detecting avionics...</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Flight Data</h2>
+      <div class="row"><span>IAS:</span> <strong id="ias">—</strong></div>
+      <div class="row"><span>ALT:</span> <strong id="alt">—</strong></div>
+    </div>
   </div>
   <script src="./index.js"></script>
 </body>

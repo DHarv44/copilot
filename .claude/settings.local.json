@@ -9,7 +9,12 @@
       "Bash(git add:*)",
       "Bash(git branch:*)",
       "Bash(git push:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(powershell:*)",
+      "Bash(npm start)",
+      "Bash(node:*)",
+      "Bash(npx electron:*)",
+      "Read(//d/Steam/steamapps/common/MFS/Official/**)"
     ],
     "deny": [],
     "ask": []
