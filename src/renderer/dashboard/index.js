@@ -3,13 +3,13 @@ const EVENTS = {
   "version": "1.0.0",
   "k": {
     "AP":   { "on": "AP_MASTER",               "off": "AP_MASTER",               "simvar": "AUTOPILOT MASTER" },
-    "FD":   { "on": "TOGGLE_FLIGHT_DIRECTOR",  "off": "TOGGLE_FLIGHT_DIRECTOR",  "simvar": "AUTOPILOT FLIGHT DIRECTOR ACTIVE" },
-    "HDG":  { "on": "AP_PANEL_HEADING_HOLD",   "off": "AP_PANEL_HEADING_HOLD",   "simvar": "AUTOPILOT HEADING LOCK" },
-    "NAV":  { "on": "AP_NAV1_HOLD",            "off": "AP_NAV1_HOLD",            "simvar": "AUTOPILOT NAV1 LOCK" },
-    "APR":  { "on": "AP_APR_HOLD",             "off": "AP_APR_HOLD",             "simvar": "AUTOPILOT APPROACH ACTIVE" },
-    "ALT":  { "on": "AP_ALT_HOLD",             "off": "AP_ALT_HOLD",             "simvar": "AUTOPILOT ALTITUDE LOCK" },
+    "FD":   { "on": "FLIGHT_DIRECTOR_ON",      "off": "FLIGHT_DIRECTOR_OFF",     "simvar": "AUTOPILOT FLIGHT DIRECTOR ACTIVE" },
+    "HDG":  { "on": "AP_HDG_HOLD_ON",          "off": "AP_HDG_HOLD_OFF",         "simvar": "AUTOPILOT HEADING LOCK" },
+    "NAV":  { "on": "AP_NAV1_HOLD_ON",         "off": "AP_NAV1_HOLD_OFF",        "simvar": "AUTOPILOT NAV1 LOCK" },
+    "APR":  { "on": "AP_APR_HOLD_ON",          "off": "AP_APR_HOLD_OFF",         "simvar": "AUTOPILOT APPROACH ACTIVE" },
+    "ALT":  { "on": "AP_ALT_HOLD_ON",          "off": "AP_ALT_HOLD_OFF",         "simvar": "AUTOPILOT ALTITUDE LOCK" },
     "VS":   { "on": "AP_VS_HOLD",              "off": "AP_VS_HOLD",              "simvar": "AUTOPILOT VERTICAL HOLD" },
-    "FLC":  { "on": "FLIGHT_LEVEL_CHANGE",     "off": "FLIGHT_LEVEL_CHANGE",     "simvar": "AUTOPILOT FLIGHT LEVEL CHANGE" }
+    "FLC":  { "on": "FLIGHT_LEVEL_CHANGE_ON",  "off": "FLIGHT_LEVEL_CHANGE_OFF", "simvar": "AUTOPILOT FLIGHT LEVEL CHANGE" }
   }
 };
 

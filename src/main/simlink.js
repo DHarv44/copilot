@@ -12,6 +12,24 @@ const DEF_SAMPLE = 101, REQ_SAMPLE = 101;
 const DEF_METADATA = 102, REQ_METADATA = 102;
 const EVT_AIRCRAFT_LOADED = 1001;
 
+// K-event IDs (stable, pre-mapped)
+const EV = {
+  AP_MASTER: 0x1100,
+  FD_ON: 0x1102,
+  FD_OFF: 0x1103,
+  HDG_ON: 0x1104,
+  HDG_OFF: 0x1105,
+  NAV_ON: 0x1106,
+  NAV_OFF: 0x1107,
+  APR_ON: 0x1108,
+  APR_OFF: 0x1109,
+  ALT_ON: 0x110A,
+  ALT_OFF: 0x110B,
+  VS_HOLD: 0x110C,
+  FLC_ON: 0x110D,
+  FLC_OFF: 0x110E,
+};
+
 // AP K-event group and SimVar definitions
 const GROUP_K = 1001;
 const DEF_AP = 10, REQ_AP = 10;
@@ -58,18 +76,11 @@ let state = {
 };
 
 // K-event mapping and AP state listeners
-const KMAP = {};
-let nextClientEventId = 2000;
+let kReady = false;
+const kQueue = []; // [{name, data, resolve, reject}]
 let oncePending = false;
 const listeners = { apState: [] };
-
-function ensureK(name) {
-  if (KMAP[name]) return KMAP[name];
-  const id = nextClientEventId++;
-  handle.mapClientEventToSimEvent(id, name);
-  handle.addClientEventToNotificationGroup(GROUP_K, id, false);
-  return (KMAP[name] = id);
-}
+const EVT_K_READY = 0x3001;
 
 function notifyApState(flags) {
   for (const cb of listeners.apState) cb(flags);
@@ -91,7 +102,7 @@ function connect() {
   if (reconnectTimer) clearTimeout(reconnectTimer);
 
   LOG('attempting connection...');
-  open('MSFS-Electron-Hello', Protocol.FSX_SP2)
+  open('MSFS-Electron-Hello', Protocol.KittyHawk)
     .then(({ recvOpen, handle: h }) => {
       handle = h;
       state.connected = true;
@@ -122,7 +133,21 @@ function connect() {
       handle.subscribeToSystemEvent(EVT_AIRCRAFT_LOADED, 'AircraftLoaded');
       LOG('✓ subscribed to AircraftLoaded event');
 
+      // Subscribe to 1sec tick to guarantee K-events are processed
+      handle.subscribeToSystemEvent(EVT_K_READY, '1sec');
+
       handle.on('event', (ev) => {
+        // K-events ready check
+        if (!kReady && ev.clientEventId === EVT_K_READY) {
+          kReady = true;
+          LOG('✓ K-events ready, flushing queue:', kQueue.length);
+          while (kQueue.length) {
+            const job = kQueue.shift();
+            _txK(job.name, job.data, job.resolve, job.reject);
+          }
+          return;
+        }
+
         LOG('>>> EVENT:', JSON.stringify(ev));
         if (ev.clientEventId === EVT_AIRCRAFT_LOADED) {
           state.lastLoadedAt = Date.now();
@@ -140,11 +165,38 @@ function connect() {
         }
         handle.requestDataOnSimObject(REQ_AP, DEF_AP, SimConnectConstants.OBJECT_ID_USER, SimConnectPeriod.SIM_FRAME);
         LOG('✓ AP SimVars defined');
-
-        // Set notification group priority
-        handle.setNotificationGroupPriority(GROUP_K, 1);
       } catch (e) {
         LOG('⚠ AP setup failed:', e.message);
+      }
+
+      // Map K-events once per connection
+      try {
+        handle.mapClientEventToSimEvent(EV.AP_MASTER, 'AP_MASTER');
+        handle.mapClientEventToSimEvent(EV.FD_ON, 'FLIGHT_DIRECTOR_ON');
+        handle.mapClientEventToSimEvent(EV.FD_OFF, 'FLIGHT_DIRECTOR_OFF');
+        handle.mapClientEventToSimEvent(EV.HDG_ON, 'AP_HDG_HOLD_ON');
+        handle.mapClientEventToSimEvent(EV.HDG_OFF, 'AP_HDG_HOLD_OFF');
+        handle.mapClientEventToSimEvent(EV.NAV_ON, 'AP_NAV1_HOLD_ON');
+        handle.mapClientEventToSimEvent(EV.NAV_OFF, 'AP_NAV1_HOLD_OFF');
+        handle.mapClientEventToSimEvent(EV.APR_ON, 'AP_APR_HOLD_ON');
+        handle.mapClientEventToSimEvent(EV.APR_OFF, 'AP_APR_HOLD_OFF');
+        handle.mapClientEventToSimEvent(EV.ALT_ON, 'AP_ALT_HOLD_ON');
+        handle.mapClientEventToSimEvent(EV.ALT_OFF, 'AP_ALT_HOLD_OFF');
+        handle.mapClientEventToSimEvent(EV.VS_HOLD, 'AP_VS_HOLD');
+        handle.mapClientEventToSimEvent(EV.FLC_ON, 'FLIGHT_LEVEL_CHANGE_ON');
+        handle.mapClientEventToSimEvent(EV.FLC_OFF, 'FLIGHT_LEVEL_CHANGE_OFF');
+
+        // Add to notification group
+        Object.values(EV).forEach(id => {
+          handle.addClientEventToNotificationGroup(GROUP_K, id, false);
+        });
+
+        // Set group priority
+        handle.setNotificationGroupPriority(GROUP_K, SimConnectConstants.GROUP_PRIORITY_HIGHEST);
+
+        LOG('✓ K-events mapped, waiting for 1sec tick');
+      } catch (e) {
+        LOG('⚠ K-event setup failed:', e.message);
       }
 
       handle.on('simObjectData', (packet) => {
@@ -286,6 +338,7 @@ function disconnect() {
   }
   handle = null;
   titleRetryCount = 0;
+  kReady = false;
   state.connected = false;
   state.titleResolved = false;
   LOG('disconnected, will reconnect in 2s');
@@ -293,19 +346,56 @@ function disconnect() {
   reconnectTimer = setTimeout(connect, 2000);
 }
 
+function kIdByName(name) {
+  const nameToId = {
+    'AP_MASTER': EV.AP_MASTER,
+    'FLIGHT_DIRECTOR_ON': EV.FD_ON,
+    'FLIGHT_DIRECTOR_OFF': EV.FD_OFF,
+    'AP_HDG_HOLD_ON': EV.HDG_ON,
+    'AP_HDG_HOLD_OFF': EV.HDG_OFF,
+    'AP_NAV1_HOLD_ON': EV.NAV_ON,
+    'AP_NAV1_HOLD_OFF': EV.NAV_OFF,
+    'AP_APR_HOLD_ON': EV.APR_ON,
+    'AP_APR_HOLD_OFF': EV.APR_OFF,
+    'AP_ALT_HOLD_ON': EV.ALT_ON,
+    'AP_ALT_HOLD_OFF': EV.ALT_OFF,
+    'AP_VS_HOLD': EV.VS_HOLD,
+    'FLIGHT_LEVEL_CHANGE_ON': EV.FLC_ON,
+    'FLIGHT_LEVEL_CHANGE_OFF': EV.FLC_OFF,
+  };
+  return nameToId[name] || null;
+}
+
 exports.sendK = (name, data = 0) => new Promise((resolve, reject) => {
   if (!state.connected || !handle) return reject(new Error('SimConnect not ready'));
+  const id = kIdByName(name);
+  if (id == null) return reject(new Error(`Unknown K-event: ${name}`));
+  if (!kReady) {
+    T('queue K-event (not ready):', name, data);
+    kQueue.push({ name, data, resolve, reject });
+    return;
+  }
+  _txK(name, data, resolve, reject);
+});
+
+function _txK(name, data, resolve, reject) {
   try {
-    const id = ensureK(name);
-    T('TX K-event', name, 'id:', id, 'data:', data);
-    handle.transmitClientEvent(SimConnectConstants.OBJECT_ID_USER, id, data, GROUP_K, SimConnectConstants.EVENT_FLAG_GROUPID_IS_PRIORITY);
-    requestApOnce(); // fast refresh
+    const id = kIdByName(name);
+    T('TX K-event', JSON.stringify(name), `(id: 0x${id.toString(16)}) data: ${data|0}`);
+    handle.transmitClientEvent(
+      0,        // SIMCONNECT_OBJECT_ID_USER
+      id,       // mapped client event id
+      data|0,   // ensure integer
+      1,        // PRIORITY = SIMCONNECT_GROUP_PRIORITY_HIGHEST
+      1         // FLAG = SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY
+    );
+    requestApOnce();
     resolve();
   } catch (e) {
     log.error('[simlink] sendK error:', e);
     reject(e);
   }
-});
+}
 
 exports.setTrace = (on) => {
   TRACE = !!on;
