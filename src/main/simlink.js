@@ -52,6 +52,7 @@ const AP_VARS = [
   { name: 'AUTOPILOT NAV SELECTED', unit: 'Bool', type: 'INT32' },
   { name: 'AUTOPILOT APPROACH ACTIVE', unit: 'Bool', type: 'INT32' },
   { name: 'AUTOPILOT ALTITUDE LOCK', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT ALTITUDE LOCK VAR', unit: 'feet', type: 'FLOAT64' },
   { name: 'AUTOPILOT VERTICAL HOLD', unit: 'Bool', type: 'INT32' },
   { name: 'AUTOPILOT BACKCOURSE HOLD', unit: 'Bool', type: 'INT32' },
   { name: 'AUTOPILOT YAW DAMPER', unit: 'Bool', type: 'INT32' },

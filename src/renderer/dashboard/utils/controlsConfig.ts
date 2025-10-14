@@ -54,6 +54,23 @@ export interface EventsConfig {
   k: Record<string, EventDefinition>;
 }
 
+export interface LandingGearControl {
+  id: string;
+  cx: number;
+  cy: number;
+  label: string;
+}
+
+export interface G1000Control {
+  id: string;
+  cx: number;
+  cy: number;
+  width: number;
+  height: number;
+  mode: 'PFD' | 'MFD';
+  debug?: boolean;
+}
+
 export interface ControlsConfig {
   pushButtons: ControlButton[];
   rotaryKnobs: ControlKnob[];
@@ -61,6 +78,8 @@ export interface ControlsConfig {
   smallCircles: SmallCircle[];
   indicators: Indicator[];
   toggleSwitches: ToggleSwitch[];
+  landingGear?: LandingGearControl[];
+  g1000Bezels?: G1000Control[];
 }
 
 export const EVENTS: EventsConfig = {
@@ -95,7 +114,7 @@ export const CONTROLS: ControlsConfig = {
   rotaryKnobs: [
     { id: 'IAS_KNOB', cx: 165.07, cy: 69.17, label: '' },
     { id: 'HDG_KNOB', cx: 122.95, cy: 117.62, label: '' },
-    { id: 'ALT_KNOB', cx: 385.03, cy: 117.66, label: '' }
+    { id: 'ALT_KNOB', cx: 23, cy: 135, label: '' }
   ],
   pushRotaryKnobs: [
     { id: 'MFD', x: 355.71, y: 15.62, width: 15, height: 15, label: '' },
@@ -137,5 +156,14 @@ export const CONTROLS: ControlsConfig = {
     { id: 'STROBE', cx: 273.00, cy: 23.35, label: 'STROBE' },
     { id: 'TAIL', cx: 293.00, cy: 23.35, label: 'TAIL' },
     { id: 'BEACON', cx: 313.01, cy: 23.35, label: 'BEACON' }
+  ],
+  landingGear: [
+    { id: 'GEAR', cx: 235.54, cy: 239.32, label: 'GEAR' }
+  ],
+  g1000Bezels: [
+    // Left rectangle (PFD) at x=35.5, y=130, width=183, height=124
+    { id: 'G1000_PFD', cx: 35.5, cy: 130, width: 183, height: 124, mode: 'PFD', debug: true },
+    // Right rectangle (MFD) at x=289.5, y=130, width=183, height=124
+    { id: 'G1000_MFD', cx: 289.5, cy: 130, width: 183, height: 124, mode: 'MFD', debug: true }
   ]
 };
