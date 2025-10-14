@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <!-- Push Button - Grey Circle -->
+  <circle
+    cx="15"
+    cy="15"
+    r="11"
+    fill="#4a4a4a"
+    stroke="#2a2a2a"
+    stroke-width="1"
+    style="cursor: pointer;" />
+
+  <!-- Label (optional - will be replaced dynamically) -->
+  <text
+    x="15"
+    y="19"
+    font-family="sans-serif"
+    font-size="7"
+    font-weight="bold"
+    fill="#d0d0d0"
+    text-anchor="middle">AP</text>
+</svg>

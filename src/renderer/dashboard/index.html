@@ -9,24 +9,13 @@
 <body>
   <div id="app">
     <nav class="top-nav">
-      <button class="nav-btn active" data-view="sim">Sim Connection</button>
-      <button class="nav-btn" data-view="cockpit">Cockpit</button>
+      <button class="nav-btn active" data-view="cockpit">Cockpit</button>
+      <button class="nav-btn" data-view="sim">Sim Connection</button>
       <button class="nav-btn" data-view="autopilot">Autopilot</button>
     </nav>
 
-    <div id="view-sim" class="view active">
+    <div id="view-sim" class="view">
       <h1>MSFS Dashboard</h1>
-
-    <div id="ap-bar" class="ap-bar">
-      <button data-key="AP">AP</button>
-      <button data-key="FD">FD</button>
-      <button data-key="HDG">HDG</button>
-      <button data-key="NAV">NAV</button>
-      <button data-key="APR">APR</button>
-      <button data-key="ALT">ALT</button>
-      <button data-key="VS">VS</button>
-      <button data-key="FLC">FLC</button>
-    </div>
 
     <div class="card">
       <h2>Connection</h2>
@@ -64,7 +53,7 @@
     </div>
     </div>
 
-    <div id="view-cockpit" class="view">
+    <div id="view-cockpit" class="view active">
       <div class="cockpit-container">
         <div id="svg-container"></div>
       </div>

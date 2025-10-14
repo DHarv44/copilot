@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="25" height="50" viewBox="0 0 25 50">
+  <!-- Roller Control - Rectangle with Rectangle Inside (Vertical) -->
+
+  <!-- Outer rectangle -->
+  <rect
+    x="4"
+    y="2"
+    width="17"
+    height="46"
+    fill="#5a5a5a"
+    stroke="#2a2a2a"
+    stroke-width="1"
+    rx="2"
+    style="cursor: ns-resize;" />
+
+  <!-- Inner rectangle (drag area) -->
+  <rect
+    x="7"
+    y="5"
+    width="11"
+    height="40"
+    fill="#3a3a3a"
+    stroke="#1a1a1a"
+    stroke-width="0.8"
+    rx="1" />
+
+  <!-- Center line indicators -->
+  <line
+    x1="9"
+    y1="25"
+    x2="16"
+    y2="25"
+    stroke="#c0c0c0"
+    stroke-width="1"
+    stroke-linecap="round" />
+
+  <line
+    x1="9"
+    y1="20"
+    x2="16"
+    y2="20"
+    stroke="#c0c0c0"
+    stroke-width="0.6"
+    stroke-linecap="round" />
+
+  <line
+    x1="9"
+    y1="30"
+    x2="16"
+    y2="30"
+    stroke="#c0c0c0"
+    stroke-width="0.6"
+    stroke-linecap="round" />
+
+  <!-- Label -->
+  <text
+    x="12.5"
+    y="27"
+    font-family="sans-serif"
+    font-size="5"
+    font-weight="bold"
+    fill="#d0d0d0"
+    text-anchor="middle"
+    transform="rotate(90 12.5 27)">TRIM</text>
+</svg>

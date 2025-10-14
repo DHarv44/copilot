@@ -195,25 +195,30 @@ strong { color: #7ee787; }
   left: 0;
   right: 0;
   bottom: 0;
-  background: #0d1117;
+  background: #ffffff;
+  overflow: hidden;
 }
 
 #svg-container {
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  position: relative;
 }
 
 #svg-container svg {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: contain;
 }
 
-#svg-container svg [id]:hover {
-  outline: 2px solid #58a6ff;
+/* Control layer (SVG elements) */
+.control {
   cursor: pointer;
+  transition: all 0.15s;
+}
+
+.control text {
+  pointer-events: none;
 }
 
 /* Autopilot Monitor */
