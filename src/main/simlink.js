@@ -16,26 +16,26 @@ const EVT_AIRCRAFT_LOADED = 1001;
 const GROUP_K = 1001;
 const DEF_AP = 10, REQ_AP = 10;
 const AP_VARS = [
-  'AUTOPILOT MASTER',
-  'AUTOPILOT FLIGHT DIRECTOR ACTIVE',
-  'AUTOPILOT HEADING LOCK',
-  'AUTOPILOT NAV1 LOCK',
-  'AUTOPILOT NAV SELECTED',
-  'AUTOPILOT APPROACH ACTIVE',
-  'AUTOPILOT ALTITUDE LOCK',
-  'AUTOPILOT VERTICAL HOLD',
-  'AUTOPILOT BACKCOURSE HOLD',
-  'AUTOPILOT YAW DAMPER',
-  'AUTOPILOT AIRSPEED HOLD',
-  'AUTOPILOT MACH HOLD',
-  'AUTOPILOT FLIGHT LEVEL CHANGE',
-  'AUTOPILOT PITCH HOLD',
-  'AUTOPILOT GLIDESLOPE HOLD',
-  'AUTOPILOT THROTTLE ARM',
-  'AUTOPILOT TAKEOFF POWER ACTIVE',
-  'AUTOPILOT WING LEVELER',
-  'GPS DRIVES NAV1',
-  'GPS WP CROSS TRK'
+  { name: 'AUTOPILOT MASTER', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT FLIGHT DIRECTOR ACTIVE', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT HEADING LOCK', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT NAV1 LOCK', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT NAV SELECTED', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT APPROACH ACTIVE', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT ALTITUDE LOCK', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT VERTICAL HOLD', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT BACKCOURSE HOLD', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT YAW DAMPER', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT AIRSPEED HOLD', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT MACH HOLD', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT FLIGHT LEVEL CHANGE', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT PITCH HOLD', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT GLIDESLOPE HOLD', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT THROTTLE ARM', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT TAKEOFF POWER ACTIVE', unit: 'Bool', type: 'INT32' },
+  { name: 'AUTOPILOT WING LEVELER', unit: 'Bool', type: 'INT32' },
+  { name: 'GPS DRIVES NAV1', unit: 'Bool', type: 'INT32' },
+  { name: 'GPS WP CROSS TRK', unit: 'nautical miles', type: 'FLOAT64' }
 ];
 
 let handle = null;
@@ -72,7 +72,6 @@ function ensureK(name) {
 }
 
 function notifyApState(flags) {
-  T('notifyApState called with', Object.keys(flags).length, 'flags, listeners:', listeners.apState.length);
   for (const cb of listeners.apState) cb(flags);
 }
 
@@ -137,9 +136,9 @@ function connect() {
       // Define AP SimVars
       try {
         for (const v of AP_VARS) {
-          handle.addToDataDefinition(DEF_AP, v, 'Bool', SimConnectDataType.INT32);
+          handle.addToDataDefinition(DEF_AP, v.name, v.unit, SimConnectDataType[v.type]);
         }
-        handle.requestDataOnSimObject(REQ_AP, DEF_AP, SimConnectConstants.OBJECT_ID_USER, SimConnectPeriod.SECOND);
+        handle.requestDataOnSimObject(REQ_AP, DEF_AP, SimConnectConstants.OBJECT_ID_USER, SimConnectPeriod.SIM_FRAME);
         LOG('✓ AP SimVars defined');
 
         // Set notification group priority
@@ -159,11 +158,16 @@ function connect() {
             const buffer = packet.data;
             buffer.offset = 0; // Reset to start
 
-            // Read all values and log everything
+            // Read all values
             for (let i = 0; i < AP_VARS.length; i++) {
-              const val = buffer.readInt32();
-              flags[AP_VARS[i]] = val !== 0;
-              T(`  ${AP_VARS[i]}: ${val} (${flags[AP_VARS[i]] ? 'TRUE' : 'FALSE'})`);
+              const v = AP_VARS[i];
+              if (v.type === 'INT32') {
+                const val = buffer.readInt32();
+                flags[v.name] = val !== 0;
+              } else if (v.type === 'FLOAT64') {
+                const val = buffer.readDouble();
+                flags[v.name] = val;
+              }
             }
 
             notifyApState(flags);
@@ -294,7 +298,7 @@ exports.sendK = (name, data = 0) => new Promise((resolve, reject) => {
   try {
     const id = ensureK(name);
     T('TX K-event', name, 'id:', id, 'data:', data);
-    handle.transmitClientEvent(SimConnectConstants.OBJECT_ID_USER, id, data, GROUP_K, 0);
+    handle.transmitClientEvent(SimConnectConstants.OBJECT_ID_USER, id, data, GROUP_K, SimConnectConstants.EVENT_FLAG_GROUPID_IS_PRIORITY);
     requestApOnce(); // fast refresh
     resolve();
   } catch (e) {

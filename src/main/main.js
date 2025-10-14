@@ -77,11 +77,31 @@ electronApp.whenReady().then(() => {
 
   // Forward AP state to renderer
   simlink.onApState((flags) => {
-    log.log('[main] AP flags from SimConnect:', JSON.stringify(flags));
     const win = BrowserWindow.getAllWindows()[0];
     if (win) {
       win.webContents.send('sim:update', { type: 'apState', flags });
     }
+  });
+
+  // Navboard SVG loader
+  ipcMain.handle('navboard:get-svg', async () => {
+    const fs = require('fs').promises;
+
+    // Default to project assets folder
+    const projectRoot = path.join(__dirname, '../..');
+    const DEFAULT_SVG = path.join(projectRoot, 'assets', 'NavBoard - Smaller - cut.svg');
+    const SVG_PATH = process.env.NAVBOARD_SVG_PATH || DEFAULT_SVG;
+
+    try {
+      return await fs.readFile(SVG_PATH, 'utf8');
+    } catch (err) {
+      throw new Error(`Failed to read SVG from ${SVG_PATH}: ${err.message}`);
+    }
+  });
+
+  // Navboard interaction logging
+  ipcMain.on('navboard:interaction', (_e, payload) => {
+    log.log('[navboard]', JSON.stringify(payload));
   });
 
   // Logs path for renderer

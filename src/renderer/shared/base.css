@@ -1,0 +1,16 @@
+/* Base styles shared across all renderer windows */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: #0f1116;
+  color: #e6e6e6;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+button:focus {
+  outline: none;
+}

@@ -3,13 +3,13 @@ const EVENTS = {
   "version": "1.0.0",
   "k": {
     "AP":   { "on": "AP_MASTER",               "off": "AP_MASTER",               "simvar": "AUTOPILOT MASTER" },
-    "FD":   { "on": "FLIGHT_DIRECTOR_ON",      "off": "FLIGHT_DIRECTOR_OFF",     "simvar": "AUTOPILOT FLIGHT DIRECTOR ACTIVE" },
-    "HDG":  { "on": "AP_HDG_HOLD_ON",          "off": "AP_HDG_HOLD_OFF",         "simvar": "AUTOPILOT HEADING LOCK" },
-    "NAV":  { "on": "AP_NAV1_HOLD_ON",         "off": "AP_NAV1_HOLD_OFF",        "simvar": "AUTOPILOT NAV SELECTED" },
-    "APR":  { "on": "AP_APR_HOLD_ON",          "off": "AP_APR_HOLD_OFF",         "simvar": "AUTOPILOT APPROACH ACTIVE" },
-    "ALT":  { "on": "AP_ALT_HOLD_ON",          "off": "AP_ALT_HOLD_OFF",         "simvar": "AUTOPILOT ALTITUDE LOCK" },
+    "FD":   { "on": "TOGGLE_FLIGHT_DIRECTOR",  "off": "TOGGLE_FLIGHT_DIRECTOR",  "simvar": "AUTOPILOT FLIGHT DIRECTOR ACTIVE" },
+    "HDG":  { "on": "AP_PANEL_HEADING_HOLD",   "off": "AP_PANEL_HEADING_HOLD",   "simvar": "AUTOPILOT HEADING LOCK" },
+    "NAV":  { "on": "AP_NAV1_HOLD",            "off": "AP_NAV1_HOLD",            "simvar": "AUTOPILOT NAV1 LOCK" },
+    "APR":  { "on": "AP_APR_HOLD",             "off": "AP_APR_HOLD",             "simvar": "AUTOPILOT APPROACH ACTIVE" },
+    "ALT":  { "on": "AP_ALT_HOLD",             "off": "AP_ALT_HOLD",             "simvar": "AUTOPILOT ALTITUDE LOCK" },
     "VS":   { "on": "AP_VS_HOLD",              "off": "AP_VS_HOLD",              "simvar": "AUTOPILOT VERTICAL HOLD" },
-    "FLC":  { "on": "FLIGHT_LEVEL_CHANGE_ON",  "off": "FLIGHT_LEVEL_CHANGE_OFF", "simvar": "AUTOPILOT FLIGHT LEVEL CHANGE" }
+    "FLC":  { "on": "FLIGHT_LEVEL_CHANGE",     "off": "FLIGHT_LEVEL_CHANGE",     "simvar": "AUTOPILOT FLIGHT LEVEL CHANGE" }
   }
 };
 
@@ -160,6 +160,8 @@ if (window.api) {
 
 window.sim?.onUpdate(msg => {
   if (msg.type !== 'apState') return;
+
+  // Update AP bar buttons
   for (const [key, def] of Object.entries(EVENTS.k)) {
     const el = apBar?.querySelector(`[data-key="${key}"]`);
     if (!el || !def.simvar) continue;
@@ -167,8 +169,186 @@ window.sim?.onUpdate(msg => {
     const isActive = !!msg.flags[def.simvar];
     el.classList.toggle('active', isActive);
   }
+
+  // Update autopilot monitor table
+  updateApVarsTable(msg.flags);
 });
 
 window.cmd?.onAck(({ id, ok, err }) => {
   if (!ok) console.warn('K-ack failed', id, err);
 });
+
+// Cockpit SVG interaction - declare variables first
+const svgContainer = document.getElementById('svg-container');
+
+// Autopilot monitor
+const apVarsBody = document.getElementById('ap-vars-body');
+const apVarRows = {};
+
+// View switching
+const navBtns = document.querySelectorAll('.nav-btn');
+const views = {
+  sim: document.getElementById('view-sim'),
+  cockpit: document.getElementById('view-cockpit'),
+  autopilot: document.getElementById('view-autopilot')
+};
+
+let currentView = localStorage.getItem('lastView') || 'sim';
+
+function switchView(viewName) {
+  if (!views[viewName]) return;
+
+  currentView = viewName;
+  localStorage.setItem('lastView', viewName);
+
+  // Update nav buttons
+  navBtns.forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === viewName);
+  });
+
+  // Update views
+  Object.entries(views).forEach(([name, el]) => {
+    el.classList.toggle('active', name === viewName);
+  });
+
+  // Initialize cockpit if first time
+  if (viewName === 'cockpit' && !window.cockpitInitialized) {
+    initCockpit();
+  }
+}
+
+navBtns.forEach(btn => {
+  btn.addEventListener('click', () => switchView(btn.dataset.view));
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === '1') {
+    e.preventDefault();
+    switchView('sim');
+  } else if (e.ctrlKey && e.key === '2') {
+    e.preventDefault();
+    switchView('cockpit');
+  }
+});
+
+async function initCockpit() {
+  window.cockpitInitialized = true;
+
+  if (!window.navboard) {
+    svgContainer.innerHTML = `<div style="color:#f85149;padding:20px;">Navboard API not available (preload bridge error)</div>`;
+    console.error('window.navboard is undefined');
+    return;
+  }
+
+  try {
+    const svgText = await window.navboard.getSvgText();
+    svgContainer.innerHTML = svgText;
+
+    const svg = svgContainer.querySelector('svg');
+    if (!svg) throw new Error('No SVG element found');
+
+    // Remove viewBox to allow 100% scaling
+    svg.removeAttribute('viewBox');
+
+    // Event delegation for interactions
+    svg.addEventListener('click', handleSvgClick);
+    svg.addEventListener('mouseenter', handleSvgHover, true);
+    svg.addEventListener('mouseleave', handleSvgLeave, true);
+  } catch (err) {
+    svgContainer.innerHTML = `<div style="color:#f85149;padding:20px;">Failed to load SVG: ${err.message}</div>`;
+    console.error('SVG load error:', err);
+  }
+}
+
+function handleSvgClick(e) {
+  const target = findElementWithId(e.target);
+  if (!target || !target.id) return;
+
+  sendInteraction('click', target, e);
+}
+
+function handleSvgHover(e) {
+  const target = findElementWithId(e.target);
+  if (!target || !target.id) return;
+
+  sendInteraction('mouseenter', target, e);
+}
+
+function handleSvgLeave(e) {
+  const target = findElementWithId(e.target);
+  if (!target || !target.id) return;
+
+  sendInteraction('mouseleave', target, e);
+}
+
+function findElementWithId(el) {
+  while (el && el !== svgContainer) {
+    if (el.id) return el;
+    el = el.parentElement;
+  }
+  return null;
+}
+
+function sendInteraction(type, target, e) {
+  window.navboard.sendInteraction({
+    type,
+    id: target.id,
+    tag: target.tagName.toLowerCase(),
+    classes: Array.from(target.classList || []),
+    clientX: e.clientX,
+    clientY: e.clientY,
+    timestamp: Date.now()
+  });
+}
+
+function updateApVarsTable(flags) {
+  for (const [varName, value] of Object.entries(flags)) {
+    // Create row if doesn't exist
+    if (!apVarRows[varName]) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${varName}</td>
+        <td class="value-cell"></td>
+      `;
+      apVarsBody.appendChild(tr);
+      apVarRows[varName] = {
+        row: tr,
+        cell: tr.querySelector('.value-cell'),
+        lastValue: null
+      };
+    }
+
+    const { row, cell, lastValue } = apVarRows[varName];
+
+    // Format value based on type
+    let displayValue, className;
+    if (typeof value === 'boolean') {
+      displayValue = value ? 'TRUE' : 'FALSE';
+      className = `value-cell ${value ? 'value-true' : 'value-false'}`;
+    } else if (typeof value === 'number') {
+      displayValue = value.toFixed(3) + ' NM';
+      className = 'value-cell value-number';
+    } else {
+      displayValue = String(value);
+      className = 'value-cell';
+    }
+
+    // Update value
+    cell.textContent = displayValue;
+    cell.className = className;
+
+    // Highlight if changed
+    if (lastValue !== null && lastValue !== value) {
+      row.classList.add('changed');
+      setTimeout(() => {
+        row.classList.remove('changed');
+      }, 50);
+    }
+
+    apVarRows[varName].lastValue = value;
+  }
+}
+
+// Initialize view on load
+switchView(currentView);

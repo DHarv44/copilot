@@ -1,4 +1,4 @@
-body { margin:0; font: 14px system-ui, -apple-system, Segoe UI, Roboto; background:#0f1116; color:#e6e6e6; }
+body { font-size: 14px; }
 #app { padding: 16px; max-width: 900px; }
 
 h1 { margin: 0 0 20px 0; font-size: 24px; color: #fff; }
@@ -145,4 +145,144 @@ strong { color: #7ee787; }
   border-color: #3d7c5e;
   color: #00ff00;
   outline: 2px solid #4caf50;
+}
+
+/* Top navigation */
+.top-nav {
+  display: flex;
+  gap: 0;
+  background: #1a1d24;
+  border-bottom: 1px solid #2d3139;
+  padding: 0;
+}
+
+.nav-btn {
+  padding: 12px 24px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #888;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover {
+  background: #22252e;
+  color: #aaa;
+}
+
+.nav-btn.active {
+  color: #7ee787;
+  border-bottom-color: #7ee787;
+  background: #22252e;
+}
+
+/* Views */
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+/* Cockpit */
+.cockpit-container {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0d1117;
+}
+
+#svg-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#svg-container svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+#svg-container svg [id]:hover {
+  outline: 2px solid #58a6ff;
+  cursor: pointer;
+}
+
+/* Autopilot Monitor */
+.autopilot-monitor {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.autopilot-monitor h1 {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  color: #fff;
+}
+
+#ap-vars-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1a1d24;
+  border: 1px solid #2d3139;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#ap-vars-table thead {
+  background: #22252e;
+}
+
+#ap-vars-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#ap-vars-table td {
+  padding: 12px 16px;
+  border-top: 1px solid #2d3139;
+  font-size: 13px;
+  color: #e6e6e6;
+}
+
+#ap-vars-table td:first-child {
+  font-family: 'Courier New', monospace;
+  color: #7ee787;
+}
+
+#ap-vars-table td:last-child {
+  text-align: center;
+  font-weight: 600;
+}
+
+#ap-vars-table tr.changed {
+  background: rgba(126, 231, 135, 0.3);
+  transition: background 2s ease-out;
+}
+
+#ap-vars-table .value-true {
+  color: #7ee787;
+}
+
+#ap-vars-table .value-false {
+  color: #888;
+}
+
+#ap-vars-table .value-number {
+  color: #58a6ff;
+  font-family: 'Courier New', monospace;
 }
