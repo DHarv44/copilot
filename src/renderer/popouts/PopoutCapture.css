@@ -1,0 +1,191 @@
+/**
+ * Popout Capture Component Styles
+ */
+
+.popout-capture-container {
+  position: relative;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popout-capture-btn {
+  padding: 12px 24px;
+  background: rgba(33, 150, 243, 0.8);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.popout-capture-btn:hover {
+  background: rgba(33, 150, 243, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.popout-capture-btn:active {
+  transform: translateY(0);
+}
+
+.popout-video {
+  background: #000;
+}
+
+.popout-release-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  background: rgba(244, 67, 54, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.popout-release-btn:hover {
+  background: rgba(244, 67, 54, 1);
+  transform: scale(1.1);
+}
+
+/* Modal styles */
+.popout-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.popout-modal {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 24px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.popout-modal h3 {
+  margin: 0 0 20px 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.popout-filter {
+  margin-bottom: 16px;
+}
+
+.popout-filter label {
+  display: block;
+  color: #ccc;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.popout-filter input {
+  width: 100%;
+  padding: 8px 12px;
+  background: #2d2d2d;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.popout-filter input:focus {
+  outline: none;
+  border-color: #2196f3;
+}
+
+.popout-window-list {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 200px;
+  max-height: 400px;
+  background: #252525;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.popout-window-item {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 4px;
+  background: #2d2d2d;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 13px;
+}
+
+.popout-window-item:hover {
+  background: #3a3a3a;
+  border-color: #2196f3;
+  transform: translateX(4px);
+}
+
+.popout-window-item:active {
+  transform: translateX(2px);
+}
+
+.popout-no-results {
+  color: #888;
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 14px;
+}
+
+.popout-modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.popout-modal-actions button {
+  padding: 8px 20px;
+  background: #333;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.popout-modal-actions button:hover {
+  background: #444;
+  border-color: #555;
+}

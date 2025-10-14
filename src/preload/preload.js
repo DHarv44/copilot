@@ -2,6 +2,9 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 const genId = () => Math.random().toString(36).slice(2);
 
+// Load popout capture bridge
+require('./popcap');
+
 contextBridge.exposeInMainWorld('api', {
   onBus(cb) {
     ipcRenderer.on('bus:msg', (_e, payload) => cb(payload));
@@ -34,6 +37,25 @@ contextBridge.exposeInMainWorld('navboard', {
   sendInteraction: (payload) => {
     ipcRenderer.send('navboard:interaction', payload);
   }
+});
+
+contextBridge.exposeInMainWorld('popout', {
+  loadRegistry: () => ipcRenderer.invoke('popout:load-registry'),
+  saveRegistry: (registry) => ipcRenderer.invoke('popout:save-registry', registry),
+  upsertBinding: (binding) => ipcRenderer.invoke('popout:upsert-binding', binding),
+  removeBinding: (key) => ipcRenderer.invoke('popout:remove-binding', key),
+  getBinding: (key) => ipcRenderer.invoke('popout:get-binding', key)
+});
+
+contextBridge.exposeInMainWorld('winMove', {
+  moveOffscreen: (title, x, y, width, height) =>
+    ipcRenderer.invoke('win:move-offscreen', { title, x, y, width, height }),
+  moveToVisible: (title, x, y) =>
+    ipcRenderer.invoke('win:move-to-visible', { title, x, y }),
+  getBounds: (title) =>
+    ipcRenderer.invoke('win:get-bounds', { title }),
+  list: () =>
+    ipcRenderer.invoke('win:list')
 });
 
 console.log('Preload loaded successfully');

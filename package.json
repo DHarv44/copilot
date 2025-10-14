@@ -15,7 +15,9 @@
   "dependencies": {
     "electron": "31.3.0",
     "electron-log": "^5.4.3",
+    "electron-store": "^11.0.2",
     "node-simconnect": "^4.0.0",
+    "node-window-manager": "^2.2.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

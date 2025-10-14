@@ -137,6 +137,48 @@ electronApp.whenReady().then(() => {
   ipcMain.handle('sim:probe', async (_e, { var: varName }) => {
     return simlink.readOnce(varName);
   });
+
+  // Popout capture registry handlers
+  const popoutStore = require('./popoutStore');
+
+  ipcMain.handle('popout:load-registry', () => {
+    return popoutStore.loadRegistry();
+  });
+
+  ipcMain.handle('popout:save-registry', (_e, registry) => {
+    popoutStore.saveRegistry(registry);
+  });
+
+  ipcMain.handle('popout:upsert-binding', (_e, binding) => {
+    popoutStore.upsertBinding(binding);
+  });
+
+  ipcMain.handle('popout:remove-binding', (_e, key) => {
+    popoutStore.removeBinding(key);
+  });
+
+  ipcMain.handle('popout:get-binding', (_e, key) => {
+    return popoutStore.getBinding(key);
+  });
+
+  // Window positioning handlers (optional)
+  const winMove = require('./winMove');
+
+  ipcMain.handle('win:move-offscreen', (_e, { title, x, y, width, height }) => {
+    return winMove.moveOffscreen(title, x, y, width, height);
+  });
+
+  ipcMain.handle('win:move-to-visible', (_e, { title, x, y }) => {
+    return winMove.moveToVisible(title, x, y);
+  });
+
+  ipcMain.handle('win:get-bounds', (_e, { title }) => {
+    return winMove.getWindowBounds(title);
+  });
+
+  ipcMain.handle('win:list', () => {
+    return winMove.listWindows();
+  });
 });
 
 electronApp.on('window-all-closed', () => { electronApp.quit(); });
