@@ -28,7 +28,30 @@
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs138" />
+     id="defs138">
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient979"
+       id="linearGradient981"
+       x1="415.4046"
+       y1="602.40057"
+       x2="5084.4272"
+       y2="-1980.3949"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(3.0972486,2.4488846)" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient979">
+      <stop
+         style="stop-color:#1a1a1a;stop-opacity:1;"
+         offset="0"
+         id="stop975" />
+      <stop
+         style="stop-color:#1a1a1a;stop-opacity:0;"
+         offset="1"
+         id="stop977" />
+    </linearGradient>
+  </defs>
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -43,8 +66,8 @@
      id="namedview136"
      showgrid="false"
      inkscape:zoom="0.52181675"
-     inkscape:cx="612.91843"
-     inkscape:cy="715.27392"
+     inkscape:cx="716.7047"
+     inkscape:cy="888.89373"
      inkscape:window-x="-8"
      inkscape:window-y="32"
      inkscape:window-maximized="1"
@@ -6114,6 +6137,13 @@ lX+3bPjLL78k5+dnMgxD8mLK45OTD9++ffspLff/Az8Rse50iuyZAAAAAElFTkSuQmCC
      id="image912"
      x="1"
      y="1" />
+  <rect
+     style="opacity:1;mix-blend-mode:normal;fill:url(#linearGradient981);fill-opacity:1;stroke:#000000;stroke-width:3.924;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+     id="rect876"
+     width="1024.2059"
+     height="771.17352"
+     x="196.8746"
+     y="53.942162" />
   <!-- Background Image (must be in same directory structure) -->
   <!-- Backlight (semi-transparent) -->
   <image
@@ -6580,4 +6610,11 @@ lX+3bPjLL78k5+dnMgxD8mLK45OTD9++ffspLff/Az8Rse50iuyZAAAAAElFTkSuQmCC
      stroke="#ff0000"
      stroke-width="1.78284"
      style="opacity:0.7" />
+  <rect
+     style="opacity:0.1;fill:#000000;fill-opacity:1;stroke:#005200;stroke-width:3.90829;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+     id="rect991"
+     width="1024.2059"
+     height="771.17352"
+     x="196.8746"
+     y="53.942162" />
 </svg>

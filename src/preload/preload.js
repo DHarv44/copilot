@@ -24,7 +24,7 @@ contextBridge.exposeInMainWorld('cmd', {
 });
 
 contextBridge.exposeInMainWorld('sim', {
-  onUpdate: (cb) => ipcRenderer.on('sim:update', (_e, m) => cb(m))
+  onUpdate: (cb) => ipcRenderer.on('bus:msg', (_e, m) => cb(m))
 });
 
 contextBridge.exposeInMainWorld('navboard', {

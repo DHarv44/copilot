@@ -15,7 +15,7 @@ export function useSimConnection() {
   });
 
   useEffect(() => {
-    if (!window.sim) {
+    if (!window.sim || !window.api) {
       setState({
         connected: false,
         status: 'Preload not available',
@@ -24,7 +24,21 @@ export function useSimConnection() {
       return;
     }
 
-    window.sim.onUpdate((msg: SimMessage) => {
+    // Get message history to catch status sent before component mount
+    window.api.onHistory((history: SimMessage[]) => {
+      // Find most recent status message
+      const statusMsg = [...history].reverse().find(msg => msg.type === 'status');
+      if (statusMsg) {
+        setState({
+          connected: statusMsg.connected || false,
+          status: statusMsg.connected ? 'Connected' : 'Disconnected',
+          statusColor: statusMsg.connected ? '#2ecc71' : '#e67e22'
+        });
+      }
+    });
+
+    // Listen for future status updates
+    const handler = (msg: SimMessage) => {
       if (msg.type === 'status') {
         setState({
           connected: msg.connected || false,
@@ -32,7 +46,9 @@ export function useSimConnection() {
           statusColor: msg.connected ? '#2ecc71' : '#e67e22'
         });
       }
-    });
+    };
+
+    window.sim.onUpdate(handler);
   }, []);
 
   return state;

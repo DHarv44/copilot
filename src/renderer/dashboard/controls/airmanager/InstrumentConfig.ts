@@ -60,6 +60,9 @@ export type ButtonCallback = {
   event: string;
   value?: number | string;
 } | {
+  type: 'press';
+  button: string;  // Button name (AP, FD, HDG, etc.) for Input Event → K-event fallback
+} | {
   type: 'custom';
   code: string;  // Raw Lua code if we can't parse it
 };

@@ -105,6 +105,7 @@ export class AirManagerBezel extends BaseControl {
       const existingButton = this.group.querySelector(`#${btn.id}`) as SVGRectElement;
 
       if (existingButton) {
+
         // Make the existing button interactive
         existingButton.style.cursor = 'pointer';
         existingButton.setAttribute('data-button-id', btn.id);
@@ -268,7 +269,9 @@ export class AirManagerBezel extends BaseControl {
   private handleButtonClick(btn: ButtonDefinition): void {
     const callback = btn.callback;
 
-    if (callback.type === 'h-event') {
+    if (callback.type === 'press') {
+      window.cmd.send({ type: 'press', button: callback.button });
+    } else if (callback.type === 'h-event') {
       window.cmd.send({ type: 'H', event: callback.event });
     } else if (callback.type === 'k-event') {
       window.cmd.send({ type: 'K', event: callback.event });

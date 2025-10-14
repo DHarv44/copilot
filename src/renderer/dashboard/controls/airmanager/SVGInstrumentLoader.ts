@@ -158,17 +158,17 @@ export class SVGInstrumentLoader {
       'nav_swap': { type: 'h-event', event: `AS1000_${mode}_NAV_Switch` },
       'com_swap': { type: 'h-event', event: `AS1000_${mode}_COM_Switch` },
 
-      // Autopilot buttons
-      'ap_master': { type: 'h-event', event: `AS1000_${mode}_AP_Switch` },
-      'ap_fd': { type: 'h-event', event: `AS1000_${mode}_FD_Switch` },
-      'ap_hdg': { type: 'h-event', event: `AS1000_${mode}_HDG_Switch` },
-      'ap_alt': { type: 'h-event', event: `AS1000_${mode}_ALT_Switch` },
-      'ap_nav': { type: 'h-event', event: `AS1000_${mode}_NAV_Switch` },
-      'ap_vnav': { type: 'h-event', event: `AS1000_${mode}_VNAV_Switch` },
-      'ap_apr': { type: 'h-event', event: `AS1000_${mode}_APR_Switch` },
-      'ap_bc': { type: 'h-event', event: `AS1000_${mode}_BC_Switch` },
-      'ap_vs': { type: 'h-event', event: `AS1000_${mode}_VS_Switch` },
-      'ap_flc': { type: 'h-event', event: `AS1000_${mode}_FLC_Switch` },
+      // Autopilot buttons - use press() functions with Input Event → K-event fallback
+      'ap_master': { type: 'press', button: 'AP' },
+      'ap_fd': { type: 'press', button: 'FD' },
+      'ap_hdg': { type: 'press', button: 'HDG' },
+      'ap_alt': { type: 'press', button: 'ALT' },
+      'ap_nav': { type: 'press', button: 'NAV' },
+      'ap_vnav': { type: 'press', button: 'VNAV' },
+      'ap_apr': { type: 'press', button: 'APR' },
+      'ap_bc': { type: 'press', button: 'BC' },
+      'ap_vs': { type: 'press', button: 'VS' },
+      'ap_flc': { type: 'press', button: 'FLC' },
       'nose_up': { type: 'h-event', event: `AS1000_${mode}_NOSE_UP` },
       'nose_down': { type: 'h-event', event: `AS1000_${mode}_NOSE_DOWN` },
 

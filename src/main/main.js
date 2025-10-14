@@ -64,7 +64,7 @@ electronApp.whenReady().then(() => {
       return;
     }
 
-    // Press commands (Input Event / H-event / K-event fallback)
+    // Press commands (Input Event → K-event fallback)
     if (msg.type === 'press' && msg.button) {
       try {
         const fnName = `press${msg.button}`;
@@ -80,14 +80,15 @@ electronApp.whenReady().then(() => {
       return;
     }
 
-    // K-events (legacy fallback)
-    if (msg.type === 'k' && msg.event) {
+    // K-events (direct K-event calls)
+    if ((msg.type === 'k' || msg.type === 'K') && msg.event) {
       try {
         await simlink.sendK(msg.event);
         _e.sender.send('sim:ack', { id: msg.id, ok: true });
       } catch (err) {
         _e.sender.send('sim:ack', { id: msg.id, ok: false, err: String(err?.exceptionName || err?.message || err) });
       }
+      return;
     }
   });
 
