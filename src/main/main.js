@@ -64,7 +64,23 @@ electronApp.whenReady().then(() => {
       return;
     }
 
-    // K-events
+    // Press commands (Input Event / H-event / K-event fallback)
+    if (msg.type === 'press' && msg.button) {
+      try {
+        const fnName = `press${msg.button}`;
+        if (typeof simlink[fnName] === 'function') {
+          simlink[fnName]();
+          _e.sender.send('sim:ack', { id: msg.id, ok: true });
+        } else {
+          throw new Error(`Unknown button: ${msg.button}`);
+        }
+      } catch (err) {
+        _e.sender.send('sim:ack', { id: msg.id, ok: false, err: String(err?.message || err) });
+      }
+      return;
+    }
+
+    // K-events (legacy fallback)
     if (msg.type === 'k' && msg.event) {
       try {
         await simlink.sendK(msg.event);

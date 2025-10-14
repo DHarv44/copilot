@@ -1,6 +1,6 @@
 const {
   open, Protocol,
-  SimConnectDataType, SimConnectPeriod, SimConnectConstants
+  SimConnectDataType, SimConnectPeriod, SimConnectConstants,
 } = require('node-simconnect');
 
 const bus = require('./bus');
@@ -15,19 +15,30 @@ const EVT_AIRCRAFT_LOADED = 1001;
 // K-event IDs (stable, pre-mapped)
 const EV = {
   AP_MASTER: 0x1100,
-  FD_ON: 0x1102,
-  FD_OFF: 0x1103,
-  HDG_ON: 0x1104,
-  HDG_OFF: 0x1105,
-  NAV_ON: 0x1106,
-  NAV_OFF: 0x1107,
-  APR_ON: 0x1108,
-  APR_OFF: 0x1109,
-  ALT_ON: 0x110A,
-  ALT_OFF: 0x110B,
-  VS_HOLD: 0x110C,
-  FLC_ON: 0x110D,
-  FLC_OFF: 0x110E,
+  AP_MASTER_ON: 0x1101,
+  AP_MASTER_OFF: 0x1102,
+  FD_ON: 0x1103,
+  FD_OFF: 0x1104,
+  HDG_ON: 0x1105,
+  HDG_OFF: 0x1106,
+  NAV_ON: 0x1107,
+  NAV_OFF: 0x1108,
+  APR_ON: 0x1109,
+  APR_OFF: 0x110A,
+  ALT_ON: 0x110B,
+  ALT_OFF: 0x110C,
+  VS_HOLD: 0x110D,
+  FLC_ON: 0x110E,
+  FLC_OFF: 0x110F,
+  // Toggle variants used as fallbacks in UI
+  FD_TOGGLE: 0x1110,
+  HDG_TOGGLE: 0x1111,
+  NAV_TOGGLE: 0x1112,
+  APR_TOGGLE: 0x1113,
+  BC_TOGGLE: 0x1114,
+  ALT_TOGGLE: 0x1115,
+  FLC_TOGGLE: 0x1116,
+  YD_TOGGLE: 0x1117,
 };
 
 // AP K-event group and SimVar definitions
@@ -73,6 +84,30 @@ let state = {
   titleAttempts: 0,
   titleResolved: false,
   lastTitle: null
+};
+
+// Cache of last known AP flags for smarter fallbacks
+// no-op
+
+// Input Event hashes for G1000 NXi (enumerated at startup)
+const INPUT = {
+  AP: null, FD: null, HDG: null, NAV: null, APR: null, BC: null,
+  ALT: null, VS: null, FLC: null, VNAV: null, YD: null
+};
+
+// H-event candidates for G1000 NXi (primary control path)
+const H = {
+  AP:   ['AS1000_PFD_AP', 'AS1000_PFD_AP_Push', 'WTG1000_PFD_AP'],
+  FD:   ['AS1000_PFD_FD', 'AS1000_PFD_FD_Push', 'WTG1000_PFD_FD'],
+  HDG:  ['AS1000_PFD_HDG', 'WTG1000_PFD_HDG'],
+  NAV:  ['AS1000_PFD_NAV', 'WTG1000_PFD_NAV'],
+  APR:  ['AS1000_PFD_APR', 'WTG1000_PFD_APR'],
+  BC:   ['AS1000_PFD_BC', 'WTG1000_PFD_BC'],
+  ALT:  ['AS1000_PFD_ALT', 'WTG1000_PFD_ALT'],
+  VS:   ['AS1000_PFD_VS', 'WTG1000_PFD_VS'],
+  FLC:  ['AS1000_PFD_FLC', 'WTG1000_PFD_FLC'],
+  VNAV: ['AS1000_PFD_VNAV', 'WTG1000_PFD_VNAV'],
+  YD:   ['AS1000_PFD_YD', 'WTG1000_PFD_YD']
 };
 
 // K-event mapping and AP state listeners
@@ -155,6 +190,10 @@ function connect() {
           LOG('>>> AircraftLoaded event at', new Date().toISOString());
           titleRetryCount = 0;
           requestAircraftData();
+          // Re-enumerate Input Events shortly after aircraft loads (ensures NXi events are discoverable)
+          setTimeout(() => {
+            try { handle.enumerateInputEvents(0); } catch (_) {}
+          }, 1500);
         }
       });
 
@@ -169,9 +208,33 @@ function connect() {
         LOG('⚠ AP setup failed:', e.message);
       }
 
-      // Map K-events once per connection
+      // Enumerate Input Events for G1000 NXi
+      try {
+        handle.enumerateInputEvents(0);
+        handle.on('inputEventsList', (list) => {
+          if (!list || !Array.isArray(list.inputEventDescriptors)) return;
+          list.inputEventDescriptors.forEach((desc) => {
+            const n = desc.name;
+            const m = /^(AS1000|WTG1000)_(PFD|MFD)_(AP|FD|HDG|NAV|APR|BC|ALT|VS|FLC|VNAV|YD)/i.exec(n);
+            if (m) {
+              const key = m[3].toUpperCase();
+              if (!INPUT[key]) {
+                INPUT[key] = desc.inputEventIdHash;
+                T('Input Event found:', key, '→', n, '(hash:', String(desc.inputEventIdHash) + ')');
+              }
+            }
+          });
+        });
+        LOG('✓ Input Event enumeration started');
+      } catch (e) {
+        LOG('⚠ Input Event enumeration failed:', e.message);
+      }
+
+      // Map K-events once per connection (fallback for non-NXi aircraft)
       try {
         handle.mapClientEventToSimEvent(EV.AP_MASTER, 'AP_MASTER');
+        handle.mapClientEventToSimEvent(EV.AP_MASTER_ON, 'AP_MASTER_ON');
+        handle.mapClientEventToSimEvent(EV.AP_MASTER_OFF, 'AP_MASTER_OFF');
         handle.mapClientEventToSimEvent(EV.FD_ON, 'FLIGHT_DIRECTOR_ON');
         handle.mapClientEventToSimEvent(EV.FD_OFF, 'FLIGHT_DIRECTOR_OFF');
         handle.mapClientEventToSimEvent(EV.HDG_ON, 'AP_HDG_HOLD_ON');
@@ -185,6 +248,15 @@ function connect() {
         handle.mapClientEventToSimEvent(EV.VS_HOLD, 'AP_VS_HOLD');
         handle.mapClientEventToSimEvent(EV.FLC_ON, 'FLIGHT_LEVEL_CHANGE_ON');
         handle.mapClientEventToSimEvent(EV.FLC_OFF, 'FLIGHT_LEVEL_CHANGE_OFF');
+        // Toggle mappings used by legacy fallbacks
+        handle.mapClientEventToSimEvent(EV.FD_TOGGLE, 'TOGGLE_FLIGHT_DIRECTOR');
+        handle.mapClientEventToSimEvent(EV.HDG_TOGGLE, 'AP_HDG_HOLD');
+        handle.mapClientEventToSimEvent(EV.NAV_TOGGLE, 'AP_NAV1_HOLD');
+        handle.mapClientEventToSimEvent(EV.APR_TOGGLE, 'AP_APR_HOLD');
+        handle.mapClientEventToSimEvent(EV.BC_TOGGLE, 'AP_BC_HOLD');
+        handle.mapClientEventToSimEvent(EV.ALT_TOGGLE, 'AP_ALT_HOLD');
+        handle.mapClientEventToSimEvent(EV.FLC_TOGGLE, 'FLIGHT_LEVEL_CHANGE');
+        handle.mapClientEventToSimEvent(EV.YD_TOGGLE, 'YAW_DAMPER_TOGGLE');
 
         // Add to notification group
         Object.values(EV).forEach(id => {
@@ -192,7 +264,7 @@ function connect() {
         });
 
         // Set group priority
-        handle.setNotificationGroupPriority(GROUP_K, SimConnectConstants.GROUP_PRIORITY_HIGHEST);
+        handle.setNotificationGroupPriority(GROUP_K, 0x00000001);
 
         LOG('✓ K-events mapped, waiting for 1sec tick');
       } catch (e) {
@@ -349,19 +421,29 @@ function disconnect() {
 function kIdByName(name) {
   const nameToId = {
     'AP_MASTER': EV.AP_MASTER,
+    'AP_MASTER_ON': EV.AP_MASTER_ON,
+    'AP_MASTER_OFF': EV.AP_MASTER_OFF,
     'FLIGHT_DIRECTOR_ON': EV.FD_ON,
     'FLIGHT_DIRECTOR_OFF': EV.FD_OFF,
+    'TOGGLE_FLIGHT_DIRECTOR': EV.FD_TOGGLE,
     'AP_HDG_HOLD_ON': EV.HDG_ON,
     'AP_HDG_HOLD_OFF': EV.HDG_OFF,
+    'AP_HDG_HOLD': EV.HDG_TOGGLE,
     'AP_NAV1_HOLD_ON': EV.NAV_ON,
     'AP_NAV1_HOLD_OFF': EV.NAV_OFF,
+    'AP_NAV1_HOLD': EV.NAV_TOGGLE,
     'AP_APR_HOLD_ON': EV.APR_ON,
     'AP_APR_HOLD_OFF': EV.APR_OFF,
+    'AP_APR_HOLD': EV.APR_TOGGLE,
+    'AP_BC_HOLD': EV.BC_TOGGLE,
     'AP_ALT_HOLD_ON': EV.ALT_ON,
     'AP_ALT_HOLD_OFF': EV.ALT_OFF,
+    'AP_ALT_HOLD': EV.ALT_TOGGLE,
     'AP_VS_HOLD': EV.VS_HOLD,
     'FLIGHT_LEVEL_CHANGE_ON': EV.FLC_ON,
     'FLIGHT_LEVEL_CHANGE_OFF': EV.FLC_OFF,
+    'FLIGHT_LEVEL_CHANGE': EV.FLC_TOGGLE,
+    'YAW_DAMPER_TOGGLE': EV.YD_TOGGLE,
   };
   return nameToId[name] || null;
 }
@@ -383,11 +465,11 @@ function _txK(name, data, resolve, reject) {
     const id = kIdByName(name);
     T('TX K-event', JSON.stringify(name), `(id: 0x${id.toString(16)}) data: ${data|0}`);
     handle.transmitClientEvent(
-      0,        // SIMCONNECT_OBJECT_ID_USER
-      id,       // mapped client event id
-      data|0,   // ensure integer
-      1,        // PRIORITY = SIMCONNECT_GROUP_PRIORITY_HIGHEST
-      1         // FLAG = SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY
+      0,                    // SIMCONNECT_OBJECT_ID_USER
+      id,                   // mapped client event id
+      data|0,               // ensure integer
+      GROUP_K,              // our notification group id
+      0                     // EventFlag.EVENT_FLAG_DEFAULT
     );
     requestApOnce();
     resolve();
@@ -396,6 +478,8 @@ function _txK(name, data, resolve, reject) {
     reject(e);
   }
 }
+
+// (H-events via calculator code are not supported in node-simconnect)
 
 exports.setTrace = (on) => {
   TRACE = !!on;
@@ -408,3 +492,59 @@ exports.readOnce = async (varName) => {
   // TODO: Implement single SimVar probe
   return { error: 'Not implemented yet' };
 };
+
+// Press helper functions for G1000 NXi autopilot control
+// Try Input Events first, then H-events via calculator code, then legacy K-events
+function press(key, hEventCandidates, legacyEvent) {
+  if (!handle) {
+    log.warn('[simlink] press() called but not connected');
+    return;
+  }
+
+  // 1. Try Input Event (preferred for NXi)
+  if (INPUT[key]) {
+    try {
+      T(`Press ${key} via Input Event (hash: ${INPUT[key]})`);
+      handle.setInputEvent(INPUT[key], 1);
+      requestApOnce();
+      return;
+    } catch (e) {
+      log.error(`[simlink] Input Event failed for ${key}:`, e);
+    }
+  }
+
+  // 2. Skip H-events (requires calculator code not available here)
+
+  // 3. Fallback to legacy K-event
+  if (legacyEvent) {
+    // Kick another enumeration attempt in case Input Events were not ready yet
+    if (!INPUT[key]) {
+      try { handle.enumerateInputEvents(0); } catch (_) {}
+    }
+    log.warn(`[simlink] Falling back to legacy K-event for ${key}: ${legacyEvent}`);
+    exports.sendK(legacyEvent, 0).catch(e => {
+      log.error(`[simlink] Legacy K-event ${legacyEvent} failed:`, e);
+    });
+  } else {
+    log.error(`[simlink] All methods failed for ${key}`);
+  }
+}
+
+exports.pressAP = () => {
+  if (!handle) return;
+  log.warn('[simlink] AP: toggling via K-event AP_MASTER');
+  exports.sendK('AP_MASTER', 0).catch(e => {
+    log.error('[simlink] K-event AP_MASTER failed:', e);
+  });
+  requestApOnce();
+};
+exports.pressFD = () => press('FD', H.FD, 'TOGGLE_FLIGHT_DIRECTOR');
+exports.pressHDG = () => press('HDG', H.HDG, 'AP_HDG_HOLD');
+exports.pressNAV = () => press('NAV', H.NAV, 'AP_NAV1_HOLD');
+exports.pressAPR = () => press('APR', H.APR, 'AP_APR_HOLD');
+exports.pressBC = () => press('BC', H.BC, 'AP_BC_HOLD');
+exports.pressALT = () => press('ALT', H.ALT, 'AP_ALT_HOLD');
+exports.pressVS = () => press('VS', H.VS, 'AP_VS_HOLD');
+exports.pressFLC = () => press('FLC', H.FLC, 'FLIGHT_LEVEL_CHANGE');
+exports.pressVNAV = () => press('VNAV', H.VNAV, 'AP_NAV1_HOLD');
+exports.pressYD = () => press('YD', H.YD, 'YAW_DAMPER_TOGGLE');

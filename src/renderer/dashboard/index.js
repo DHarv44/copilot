@@ -30,11 +30,9 @@ const apBar = document.getElementById('ap-bar');
 statusEl.textContent = 'Waiting for sim…';
 
 function sendKey(key, turnOn) {
-  const def = EVENTS.k[key];
-  if (!def) return;
-  const event = turnOn ? def.on : (def.off || def.on);
-  const id = window.cmd.send({ type: 'k', event });
-  console.debug('→ K', key, turnOn ? 'ON' : 'OFF', event, id);
+  // Use new Input Event / H-event / K-event fallback system
+  const id = window.cmd.send({ type: 'press', button: key });
+  console.debug('→ Press', key, id);
 }
 
 apBar?.addEventListener('click', (e) => {
