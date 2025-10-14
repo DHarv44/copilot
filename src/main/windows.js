@@ -27,7 +27,12 @@ function createDashboardWindow() {
     }
   });
 
-  dashboardWin.loadFile(path.join(__dirname, '../renderer/dashboard/index.html'));
+  // Load from Vite dev server in development, or built files in production
+  if (process.env.VITE_DEV_SERVER_URL) {
+    dashboardWin.loadURL(process.env.VITE_DEV_SERVER_URL);
+  } else {
+    dashboardWin.loadFile(path.join(__dirname, '../../dist/renderer/src/renderer/dashboard/index.html'));
+  }
 
   // Log ALL renderer console messages (including errors)
   const log = require('./logger');

@@ -5,18 +5,31 @@
   "description": "Hello World Electron ready for node-simconnect",
   "main": "src/main/main.js",
   "scripts": {
-    "dev": "electron .",
+    "dev": "run-p dev:vite dev:electron",
+    "dev:vite": "vite",
+    "dev:electron": "cross-env VITE_DEV_SERVER_URL=http://localhost:3000/src/renderer/dashboard/index.html electron .",
+    "build": "vite build",
     "start": "electron .",
     "pack": "electron-builder"
   },
   "dependencies": {
     "electron": "31.3.0",
     "electron-log": "^5.4.3",
-    "node-simconnect": "^4.0.0"
+    "node-simconnect": "^4.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@types/node": "^24.7.2",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^4.7.0",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
     "electron-builder": "24.13.3",
     "electron-reloader": "^1.2.3",
-    "npm-run-all": "4.1.5"
+    "npm-run-all": "4.1.5",
+    "typescript": "^5.9.3",
+    "vite": "^6.3.6"
   }
 }

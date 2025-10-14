@@ -56,7 +56,7 @@
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="BG"
-     style="display:inline">
+     style="display:none">
     <rect
        style="fill:#da1400;fill-opacity:1;stroke:#009900;stroke-width:1.03799;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect11242"
@@ -74,7 +74,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     style="display:inline">
+     style="display:none">
     <g
        id="g2351-3"
        style="display:inline"
@@ -2020,7 +2020,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Cut"
-     style="display:inline">
+     style="display:none">
     <g
        id="g3873"
        transform="translate(1.7728653)" />
