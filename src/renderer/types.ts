@@ -22,6 +22,7 @@ export type Registry = Binding[];
 export interface WindowSource {
   id: string;
   name: string;
+  bounds?: { x: number; y: number; width: number; height: number };
 }
 
 /**

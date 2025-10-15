@@ -2,6 +2,7 @@ import type { AutopilotFlags } from '../../../types/simconnect';
 import { CONTROLS, EVENTS } from './controlsConfig';
 import { PushButton, RotaryKnob, ToggleSwitch, LandingGearLever, RoundPushButton, RectangularToggleSwitch, BaseControl, G1000Bezel, AirManagerBezel, createG1000Instrument, SVGInstrumentLoader } from '../controls';
 import { loadG1000PFD, loadG1000MFD } from '../controls/airmanager/instruments/Generic-Garmin_G1000_NXi';
+import { createPopoutOverlay } from '../controls/airmanager/popoutOverlay';
 
 // Store control instances
 const controlInstances = new Map<string, BaseControl>();
@@ -262,6 +263,11 @@ async function addGradientsAndControls(svg: SVGElement) {
     element.setAttribute('transform', `translate(${g1000Config.cx}, ${g1000Config.cy}) scale(${scaleX}, ${scaleY})`);
 
     controlsGroup.appendChild(element);
+
+    // Create popout overlay for this G1000 bezel
+    const titlePattern = g1000Config.mode === 'PFD' ? /(AS1000|WTG1000|G1000).*PFD/i : /(AS1000|WTG1000|G1000).*MFD/i;
+    const keyId = g1000Config.mode === 'PFD' ? 'G1000_PFD' : 'G1000_MFD';
+    createPopoutOverlay(element, keyId, titlePattern);
   }) : [];
 
   // Wait for all controls to render

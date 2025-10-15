@@ -83,18 +83,18 @@
      y="1" />
   <rect
      style="opacity:1;mix-blend-mode:normal;fill:url(#linearGradient981);fill-opacity:1;stroke:#000000;stroke-width:3.924;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
-     id="rect876"
+     id="popout"
      width="1024.2059"
      height="771.17352"
      x="193.21611"
      y="50.699493" />
   <rect
      style="opacity:0.1;fill:#000000;fill-opacity:1;stroke:#005200;stroke-width:3.90829;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
-     id="rect991"
+     id="overlay"
      width="1024.2059"
      height="771.17352"
-     x="193.20825"
-     y="50.691639" />
+     x="193.21613"
+     y="50.699493" />
   <!-- Background Image (must be in same directory structure) -->
   <!-- Backlight (semi-transparent) -->
   <image

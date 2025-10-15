@@ -1,9 +1,8 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-const genId = () => Math.random().toString(36).slice(2);
+console.log('[preload] popcap bridge ready (IPC mode)');
 
-// Load popout capture bridge
-require('./popcap');
+const genId = () => Math.random().toString(36).slice(2);
 
 contextBridge.exposeInMainWorld('api', {
   onBus(cb) {
@@ -37,6 +36,19 @@ contextBridge.exposeInMainWorld('navboard', {
   sendInteraction: (payload) => {
     ipcRenderer.send('navboard:interaction', payload);
   }
+});
+
+contextBridge.exposeInMainWorld('popcap', {
+  listWindows: () => ipcRenderer.invoke('popcap:list-windows'),
+  buildConstraints: (id) => ({
+    audio: false,
+    video: {
+      mandatory: {
+        chromeMediaSource: 'desktop',
+        chromeMediaSourceId: id
+      }
+    }
+  })
 });
 
 contextBridge.exposeInMainWorld('popout', {

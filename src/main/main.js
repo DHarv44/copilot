@@ -138,28 +138,42 @@ electronApp.whenReady().then(() => {
     return simlink.readOnce(varName);
   });
 
+  // Popout capture handlers
+  const popcap = require('./popcap');
+
+  ipcMain.handle('popcap:list-windows', async () => {
+    return await popcap.listWindows();
+  });
+
   // Popout capture registry handlers
-  const popoutStore = require('./popoutStore');
+  let popoutStore;
+  try {
+    popoutStore = require('./popoutStore');
+  } catch (err) {
+    console.error('[main] Failed to load popoutStore:', err);
+  }
 
-  ipcMain.handle('popout:load-registry', () => {
-    return popoutStore.loadRegistry();
-  });
+  if (popoutStore) {
+    ipcMain.handle('popout:load-registry', () => {
+      return popoutStore.loadRegistry();
+    });
 
-  ipcMain.handle('popout:save-registry', (_e, registry) => {
-    popoutStore.saveRegistry(registry);
-  });
+    ipcMain.handle('popout:save-registry', (_e, registry) => {
+      popoutStore.saveRegistry(registry);
+    });
 
-  ipcMain.handle('popout:upsert-binding', (_e, binding) => {
-    popoutStore.upsertBinding(binding);
-  });
+    ipcMain.handle('popout:upsert-binding', (_e, binding) => {
+      popoutStore.upsertBinding(binding);
+    });
 
-  ipcMain.handle('popout:remove-binding', (_e, key) => {
-    popoutStore.removeBinding(key);
-  });
+    ipcMain.handle('popout:remove-binding', (_e, key) => {
+      popoutStore.removeBinding(key);
+    });
 
-  ipcMain.handle('popout:get-binding', (_e, key) => {
-    return popoutStore.getBinding(key);
-  });
+    ipcMain.handle('popout:get-binding', (_e, key) => {
+      return popoutStore.getBinding(key);
+    });
+  }
 
   // Window positioning handlers (optional)
   const winMove = require('./winMove');

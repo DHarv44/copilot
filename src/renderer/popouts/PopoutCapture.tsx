@@ -24,6 +24,7 @@ interface CaptureState {
   sourceId?: string;
   sourceName?: string;
   stream?: MediaStream;
+  bounds?: { x: number; y: number; width: number; height: number };
 }
 
 export const PopoutCapture: React.FC<PopoutCaptureProps> = ({
@@ -93,6 +94,7 @@ export const PopoutCapture: React.FC<PopoutCaptureProps> = ({
   const openCaptureModal = async () => {
     try {
       const allWindows: WindowSource[] = await (window as any).popcap.listWindows();
+      console.log('[PopoutCapture] Windows:', allWindows);
       setWindows(allWindows);
       setShowModal(true);
     } catch (err) {
@@ -101,45 +103,38 @@ export const PopoutCapture: React.FC<PopoutCaptureProps> = ({
   };
 
   /**
-   * Attach capture to a specific source
+   * Attach capture with bounds (for screen capture + crop)
    */
-  const attachCapture = async (
-    sourceId: string,
-    sourceName: string
-  ): Promise<boolean> => {
-    if (!videoRef.current) return false;
+  const attachCaptureWithBounds = async (win: WindowSource): Promise<boolean> => {
+    alert('1: Starting attachCaptureWithBounds');
+    if (!videoRef.current) {
+      alert('2: videoRef.current is null!');
+      return false;
+    }
+    alert('3: videoRef exists, calling attachBySourceId');
 
     try {
-      const success = await attachBySourceId(sourceId, videoRef.current);
+      const success = await attachBySourceId(win.id, videoRef.current);
+      alert('4: attachBySourceId returned: ' + success);
 
       if (success) {
+        console.log('[PopoutCapture] Success! Setting state...');
         const stream = videoRef.current.srcObject as MediaStream;
-
-        // Calculate DPI scale for pixel-perfect alignment
-        const videoTrack = stream.getVideoTracks()[0];
-        const settings = videoTrack.getSettings();
-        const videoWidth = settings.width || width;
-        const videoHeight = settings.height || height;
-
-        const scaleX = width / videoWidth;
-        const scaleY = height / videoHeight;
-        const computedScale = Math.min(scaleX, scaleY);
-
-        setScale(computedScale);
 
         setState({
           isCapturing: true,
-          sourceId,
-          sourceName,
-          stream
+          sourceId: win.id,
+          sourceName: win.name,
+          stream,
+          bounds: win.bounds
         });
 
         // Save binding
         const binding: Binding = {
           key: keyId,
-          preferExact: sourceName,
+          preferExact: win.name,
           titleRx: titleRxDefault.source,
-          lastSourceName: sourceName
+          lastSourceName: win.name
         };
 
         await (window as any).popout.upsertBinding(binding);
@@ -150,13 +145,26 @@ export const PopoutCapture: React.FC<PopoutCaptureProps> = ({
 
         setShowModal(false);
         return true;
+      } else {
+        console.log('[PopoutCapture] attachBySourceId failed');
       }
 
       return false;
     } catch (err) {
       console.error('[PopoutCapture] Failed to attach capture:', err);
+      alert('Error: ' + err);
       return false;
     }
+  };
+
+  /**
+   * Attach capture to a specific source (legacy)
+   */
+  const attachCapture = async (
+    sourceId: string,
+    sourceName: string
+  ): Promise<boolean> => {
+    return attachCaptureWithBounds({ id: sourceId, name: sourceName });
   };
 
   /**
@@ -218,32 +226,31 @@ export const PopoutCapture: React.FC<PopoutCaptureProps> = ({
         pointerEvents: state.isCapturing ? 'none' : 'auto'
       }}
     >
-      {/* Video overlay (when capturing) */}
+      {/* Video overlay (always present, hidden when not capturing) */}
+      <video
+        ref={videoRef}
+        className="popout-video"
+        autoPlay
+        muted
+        style={{
+          width: state.bounds ? `${state.bounds.width}px` : '100%',
+          height: state.bounds ? `${state.bounds.height}px` : '100%',
+          objectFit: state.bounds ? 'none' : 'fill',
+          objectPosition: state.bounds ? `-${state.bounds.x}px -${state.bounds.y}px` : '0 0',
+          display: state.isCapturing ? 'block' : 'none',
+          transform: state.bounds ? 'none' : `scale(${scale})`,
+          transformOrigin: 'top left'
+        }}
+      />
       {state.isCapturing && (
-        <>
-          <video
-            ref={videoRef}
-            className="popout-video"
-            autoPlay
-            muted
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'fill',
-              display: 'block',
-              transform: `scale(${scale})`,
-              transformOrigin: 'top left'
-            }}
-          />
-          <button
-            className="popout-release-btn"
-            onClick={releaseBinding}
-            title="Release binding"
-            style={{ pointerEvents: 'auto' }}
-          >
-            ✕
-          </button>
-        </>
+        <button
+          className="popout-release-btn"
+          onClick={releaseBinding}
+          title="Release binding"
+          style={{ pointerEvents: 'auto' }}
+        >
+          ✕
+        </button>
       )}
 
       {/* Capture button (when not capturing) */}
@@ -283,9 +290,9 @@ export const PopoutCapture: React.FC<PopoutCaptureProps> = ({
               ) : (
                 filteredWindows.map(win => (
                   <button
-                    key={win.id}
+                    key={win.id + win.name}
                     className="popout-window-item"
-                    onClick={() => attachCapture(win.id, win.name)}
+                    onClick={() => attachCaptureWithBounds(win)}
                   >
                     {win.name}
                   </button>

@@ -6139,7 +6139,7 @@ lX+3bPjLL78k5+dnMgxD8mLK45OTD9++ffspLff/Az8Rse50iuyZAAAAAElFTkSuQmCC
      y="1" />
   <rect
      style="opacity:1;mix-blend-mode:normal;fill:url(#linearGradient981);fill-opacity:1;stroke:#000000;stroke-width:3.924;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
-     id="rect876"
+     id="popout"
      width="1024.2059"
      height="771.17352"
      x="196.8746"
@@ -6612,9 +6612,9 @@ lX+3bPjLL78k5+dnMgxD8mLK45OTD9++ffspLff/Az8Rse50iuyZAAAAAElFTkSuQmCC
      style="opacity:0.7" />
   <rect
      style="opacity:0.1;fill:#000000;fill-opacity:1;stroke:#005200;stroke-width:3.90829;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
-     id="rect991"
+     id="overlay"
      width="1024.2059"
      height="771.17352"
-     x="196.86674"
-     y="53.934307" />
+     x="196.87463"
+     y="53.942162" />
 </svg>

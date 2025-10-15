@@ -3,14 +3,14 @@
  * Moves native pop-out windows offscreen (optional)
  */
 
-import { windowManager } from 'node-window-manager';
+const { windowManager } = require('node-window-manager');
 
 /**
  * Find a window by title (exact or partial match)
- * @param title - Window title to search for
- * @returns Window object or null if not found
+ * @param {string} title - Window title to search for
+ * @returns {object|null} Window object or null if not found
  */
-export function findWindowByTitle(title: string) {
+function findWindowByTitle(title) {
   const windows = windowManager.getWindows();
 
   // Try exact match first
@@ -26,20 +26,14 @@ export function findWindowByTitle(title: string) {
 
 /**
  * Move a window offscreen
- * @param title - Window title to search for
- * @param x - X position (default: 10000)
- * @param y - Y position (default: 0)
- * @param width - Window width (optional)
- * @param height - Window height (optional)
- * @returns true if window was moved successfully
+ * @param {string} title - Window title to search for
+ * @param {number} x - X position (default: 10000)
+ * @param {number} y - Y position (default: 0)
+ * @param {number} [width] - Window width (optional)
+ * @param {number} [height] - Window height (optional)
+ * @returns {boolean} true if window was moved successfully
  */
-export function moveOffscreen(
-  title: string,
-  x: number = 10000,
-  y: number = 0,
-  width?: number,
-  height?: number
-): boolean {
+function moveOffscreen(title, x = 10000, y = 0, width, height) {
   try {
     const window = findWindowByTitle(title);
     if (!window) {
@@ -67,16 +61,12 @@ export function moveOffscreen(
 
 /**
  * Move a window back to visible area
- * @param title - Window title to search for
- * @param x - X position (default: 100)
- * @param y - Y position (default: 100)
- * @returns true if window was moved successfully
+ * @param {string} title - Window title to search for
+ * @param {number} x - X position (default: 100)
+ * @param {number} y - Y position (default: 100)
+ * @returns {boolean} true if window was moved successfully
  */
-export function moveToVisible(
-  title: string,
-  x: number = 100,
-  y: number = 100
-): boolean {
+function moveToVisible(title, x = 100, y = 100) {
   try {
     const window = findWindowByTitle(title);
     if (!window) {
@@ -97,10 +87,10 @@ export function moveToVisible(
 
 /**
  * Get window bounds by title
- * @param title - Window title to search for
- * @returns Bounds object or null if not found
+ * @param {string} title - Window title to search for
+ * @returns {{x: number, y: number, width: number, height: number}|null} Bounds object or null if not found
  */
-export function getWindowBounds(title: string): { x: number; y: number; width: number; height: number } | null {
+function getWindowBounds(title) {
   try {
     const window = findWindowByTitle(title);
     if (!window) return null;
@@ -114,9 +104,9 @@ export function getWindowBounds(title: string): { x: number; y: number; width: n
 
 /**
  * List all window titles (for debugging)
- * @returns Array of window titles
+ * @returns {string[]} Array of window titles
  */
-export function listWindows(): string[] {
+function listWindows() {
   try {
     const windows = windowManager.getWindows();
     return windows.map(w => w.getTitle()).filter(t => t.length > 0);
@@ -125,3 +115,11 @@ export function listWindows(): string[] {
     return [];
   }
 }
+
+module.exports = {
+  findWindowByTitle,
+  moveOffscreen,
+  moveToVisible,
+  getWindowBounds,
+  listWindows
+};

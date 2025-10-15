@@ -54,15 +54,20 @@ export async function attachBySourceId(
   sourceId: string,
   video: HTMLVideoElement
 ): Promise<boolean> {
+  alert('INSIDE attachBySourceId, sourceId: ' + sourceId);
   try {
+    alert('Getting constraints...');
     const constraints = await (window as any).popcap.buildConstraints(sourceId);
+    alert('Got constraints, calling getUserMedia...');
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    alert('Got stream!');
 
     video.srcObject = stream;
     await video.play().catch(() => {});
 
     return true;
   } catch (err) {
+    alert('ERROR in attachBySourceId: ' + err.message);
     console.error('[autoAttach] Failed to attach by source ID:', sourceId, err);
     return false;
   }
