@@ -65,9 +65,9 @@
      inkscape:window-height="1377"
      id="namedview136"
      showgrid="false"
-     inkscape:zoom="0.52181675"
-     inkscape:cx="551.25205"
-     inkscape:cy="542.60653"
+     inkscape:zoom="1.4759206"
+     inkscape:cx="1289.9839"
+     inkscape:cy="746.4"
      inkscape:window-x="-8"
      inkscape:window-y="32"
      inkscape:window-maximized="1"
@@ -82,7 +82,7 @@
      x="1"
      y="1" />
   <rect
-     style="opacity:1;mix-blend-mode:normal;fill:url(#linearGradient981);fill-opacity:1;stroke:#000000;stroke-width:3.924;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+     style="opacity:1;mix-blend-mode:normal;fill:transparent;fill-opacity:0;stroke:#000000;stroke-width:3.924;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
      id="popout"
      width="1024.2059"
      height="771.17352"
@@ -100,15 +100,15 @@
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\backlight_all.png"
      xlink:href="resources/backlight_all.png"
-     id="image4"
-     preserveAspectRatio="none"
-     opacity="0.5"
-     height="917"
-     width="1412"
+     x="1"
      y="1"
-     x="1" />
+     width="1412"
+     height="917"
+     opacity="0.5"
+     preserveAspectRatio="none"
+     id="image4" />
   <rect
-     id="clr-3"
+     id="directto"
      x="1258.7543"
      y="621.19476"
      width="55.543125"
@@ -118,7 +118,7 @@
      stroke-width="1.78284"
      style="opacity:0.7" />
   <rect
-     id="clr-4"
+     id="menu"
      x="1330.4639"
      y="621.19476"
      width="55.543125"
@@ -128,7 +128,7 @@
      stroke-width="1.78284"
      style="opacity:0.7" />
   <rect
-     id="clr-2"
+     id="proc"
      x="1329.9847"
      y="673.09674"
      width="55.543125"
@@ -142,114 +142,114 @@
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\plain_knob_inner.png"
      xlink:href="resources/plain_knob_inner.png"
-     height="42"
-     width="42"
-     y="47"
+     id="nav_vol"
      x="63"
-     id="nav_vol" />
+     y="47"
+     width="42"
+     height="42" />
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\plain_knob_inner.png"
      xlink:href="resources/plain_knob_inner.png"
-     height="42"
-     width="42"
-     y="47"
+     id="com_vol"
      x="1300"
-     id="com_vol" />
+     y="47"
+     width="42"
+     height="42" />
   <!-- NAV Tuning Knobs (Left) -->
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\plain_knob_outer.png"
      xlink:href="resources/plain_knob_outer.png"
-     height="79"
-     width="79"
-     y="173"
+     id="nav_tune_outer"
      x="47"
-     id="nav_tune_outer" />
+     y="173"
+     width="79"
+     height="79" />
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\plain_knob_inner.png"
      xlink:href="resources/plain_knob_inner.png"
-     height="52"
-     width="52"
-     y="187"
+     id="nav_tune_inner"
      x="61"
-     id="nav_tune_inner" />
+     y="187"
+     width="52"
+     height="52" />
   <!-- COM Tuning Knobs (Right) -->
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\plain_knob_outer.png"
      xlink:href="resources/plain_knob_outer.png"
-     height="79"
-     width="79"
-     y="173"
+     id="com_tune_outer"
      x="1282"
-     id="com_tune_outer" />
+     y="173"
+     width="79"
+     height="79" />
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\plain_knob_inner.png"
      xlink:href="resources/plain_knob_inner.png"
-     height="52"
-     width="52"
-     y="187"
+     id="com_tune_inner"
      x="1295"
-     id="com_tune_inner" />
+     y="187"
+     width="52"
+     height="52" />
   <!-- HDG Knob (Left) -->
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\hdg_knob.png"
      xlink:href="resources/hdg_knob.png"
-     height="80"
-     width="80"
-     y="340"
+     id="hdg"
      x="45"
-     id="hdg" />
+     y="340"
+     width="80"
+     height="80" />
   <!-- CRS Knob (Right) -->
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\hdg_knob.png"
      xlink:href="resources/hdg_knob.png"
-     height="80"
-     width="80"
-     y="340"
+     id="crs"
      x="1290"
-     id="crs" />
+     y="340"
+     width="80"
+     height="80" />
   <!-- ALT Knobs (Bottom Left) -->
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\plain_knob_outer.png"
      xlink:href="resources/plain_knob_outer.png"
-     height="79"
-     width="79"
-     y="793"
+     id="alt_outer"
      x="47"
-     id="alt_outer" />
+     y="793"
+     width="79"
+     height="79" />
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\plain_knob_inner.png"
      xlink:href="resources/plain_knob_inner.png"
-     height="47"
-     width="47"
-     y="809"
+     id="alt_inner"
      x="63"
-     id="alt_inner" />
+     y="809"
+     width="47"
+     height="47" />
   <!-- Range Knob (Right Side - CORRECTED COORDINATES) -->
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\plain_knob_inner.png"
      xlink:href="resources/plain_knob_inner.png"
-     height="54"
-     width="54"
-     y="501"
+     id="range"
      x="1296"
-     id="range" />
+     y="501"
+     width="54"
+     height="54" />
   <!-- FMS Knobs (Bottom Right - CORRECTED COORDINATES) -->
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\plain_knob_outer.png"
      xlink:href="resources/plain_knob_outer.png"
-     height="79"
-     width="79"
-     y="793"
+     id="fms_outer"
      x="1282"
-     id="fms_outer" />
+     y="793"
+     width="79"
+     height="79" />
   <image
      sodipodi:absref="T:\Dev\copilot\assets\Instruments\Generic\Generic-Garmin_G1000_NXi\c380f8f5-316a-42c1-0c3a-324cbd906f3c\resources\plain_knob_inner.png"
      xlink:href="resources/plain_knob_inner.png"
-     height="52"
-     width="52"
-     y="807"
+     id="fms_inner"
      x="1296"
-     id="fms_inner" />
+     y="807"
+     width="52"
+     height="52" />
   <!-- ===== BUTTONS ===== -->
   <!-- Channel Swap Buttons (Green = Display buttons) -->
   <rect
@@ -412,7 +412,7 @@
      stroke="#00ff00"
      stroke-width="2" />
   <rect
-     id="clr-9-1"
+     id="clr"
      x="1257.4017"
      y="725.42603"
      width="55.543125"
@@ -422,7 +422,7 @@
      stroke-width="1.78284"
      style="opacity:0.7" />
   <rect
-     id="clr-9"
+     id="ent"
      x="1330.4639"
      y="725.42603"
      width="55.543125"
@@ -432,7 +432,7 @@
      stroke-width="1.78284"
      style="opacity:0.7" />
   <rect
-     id="clr-1"
+     id="fpl"
      x="1257.317"
      y="673.09674"
      width="55.543125"

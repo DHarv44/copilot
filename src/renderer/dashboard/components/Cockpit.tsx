@@ -4,24 +4,27 @@ import { initializeCockpit, updateControlStates } from '../utils/cockpitControls
 
 export function Cockpit() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const initializedRef = useRef(false);
   const [initialized, setInitialized] = useState(false);
   const apFlags = useAutopilotState();
 
   // Initialize cockpit SVG on mount
   useEffect(() => {
-    if (!containerRef.current || initialized) return;
+    if (!containerRef.current || initializedRef.current) return;
 
     const initialize = async () => {
       try {
+        initializedRef.current = true;
         await initializeCockpit(containerRef.current!);
         setInitialized(true);
       } catch (err) {
         console.error('Failed to initialize cockpit:', err);
+        initializedRef.current = false;
       }
     };
 
     initialize();
-  }, [initialized]);
+  }, []);
 
   // Update control states when autopilot flags change
   useEffect(() => {

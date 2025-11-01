@@ -1,0 +1,3 @@
+T:/Dev/copilot/native/wgc-helper/build/CMakeFiles/wgc-helper.dir
+T:/Dev/copilot/native/wgc-helper/build/CMakeFiles/ALL_BUILD.dir
+T:/Dev/copilot/native/wgc-helper/build/CMakeFiles/ZERO_CHECK.dir

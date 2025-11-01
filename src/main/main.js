@@ -19,28 +19,43 @@ process.on('unhandledRejection', (reason) => {
   log.error('[unhandled]', reason);
 });
 
-const electron = require('electron');
-const { ipcMain, BrowserWindow, app } = electron;
+// Enable hot reload in development BEFORE requiring electron
+// DISABLED: electron-reloader conflicts with electron module loading
+// if (process.env.NODE_ENV !== 'production') {
+//   try {
+//     require('electron-reloader')(module, {
+//       debug: false,
+//       watchRenderer: true
+//     });
+//     log.log('[main] Hot reload enabled');
+//   } catch (e) {
+//     log.warn('[main] Failed to enable hot reload:', e.message);
+//   }
+// }
+
+let electron;
+try {
+  electron = require('electron');
+  log.log('[diag] electron require successful');
+} catch (err) {
+  log.error('[diag] Failed to require electron:', err);
+  process.exit(1);
+}
+
 const path = require('path');
 
 log.log('[diag] ✓ Running inside Electron v' + process.versions.electron);
+log.log('[diag] electron:', JSON.stringify(Object.keys(electron || {})));
 log.log('[diag] electron type:', typeof electron);
-log.log('[diag] electron.app type:', typeof electron.app);
+log.log('[diag] electron.app type:', typeof electron?.app);
 
-const electronApp = app;
-
-// Enable hot reload in development
-if (process.env.NODE_ENV !== 'production') {
-  try {
-    require('electron-reloader')(module, {
-      debug: true,
-      watchRenderer: true
-    });
-    log.log('[main] Hot reload enabled');
-  } catch (e) {
-    log.warn('[main] Failed to enable hot reload:', e.message);
-  }
+if (!electron || typeof electron !== 'object') {
+  log.error('[diag] electron module is not an object!');
+  process.exit(1);
 }
+
+const { ipcMain, BrowserWindow, app } = electron;
+const electronApp = app;
 
 electronApp.whenReady().then(() => {
   // IMPORTANT: require modules that touch Electron API AFTER whenReady
@@ -48,11 +63,17 @@ electronApp.whenReady().then(() => {
   const { buildMenu } = require('./menu');
   const settings = require('./settings');
   const simlink = require('./simlink');
+  const wasimBridge = require('./wasimBridge');
 
   settings.load();
   buildMenu();
   createDashboardWindow();
   simlink.connect();
+
+  // Start WASimCommander bridge for H-events
+  wasimBridge.start().catch(err => {
+    log.warn('[main] WASimCommander bridge not available:', err.message);
+  });
 
   // Handle sim commands with acks
   ipcMain.on('sim:cmd', async (_e, msg) => {
@@ -80,6 +101,22 @@ electronApp.whenReady().then(() => {
       return;
     }
 
+    // Toggle switches (send K-events based on switch ID and state)
+    if (msg.type === 'toggle' && msg.switch) {
+      try {
+        const fnName = `toggle${msg.switch}`;
+        if (typeof simlink[fnName] === 'function') {
+          simlink[fnName](msg.state);
+          _e.sender.send('sim:ack', { id: msg.id, ok: true });
+        } else {
+          throw new Error(`Unknown toggle switch: ${msg.switch}`);
+        }
+      } catch (err) {
+        _e.sender.send('sim:ack', { id: msg.id, ok: false, err: String(err?.message || err) });
+      }
+      return;
+    }
+
     // K-events (direct K-event calls)
     if ((msg.type === 'k' || msg.type === 'K') && msg.event) {
       try {
@@ -87,6 +124,17 @@ electronApp.whenReady().then(() => {
         _e.sender.send('sim:ack', { id: msg.id, ok: true });
       } catch (err) {
         _e.sender.send('sim:ack', { id: msg.id, ok: false, err: String(err?.exceptionName || err?.message || err) });
+      }
+      return;
+    }
+
+    // H-events (HTML/Gauge events via WASimCommander)
+    if ((msg.type === 'h' || msg.type === 'H') && msg.event) {
+      try {
+        await wasimBridge.sendEvent(msg.event);
+        _e.sender.send('sim:ack', { id: msg.id, ok: true });
+      } catch (err) {
+        _e.sender.send('sim:ack', { id: msg.id, ok: false, err: String(err?.message || err) });
       }
       return;
     }
@@ -138,11 +186,34 @@ electronApp.whenReady().then(() => {
     return simlink.readOnce(varName);
   });
 
-  // Popout capture handlers
+  // Popout capture handlers (legacy screen capture + crop)
   const popcap = require('./popcap');
 
   ipcMain.handle('popcap:list-windows', async () => {
     return await popcap.listWindows();
+  });
+
+  // Windows Graphics Capture handlers (native WGC)
+  const wgc = require('./wgcBridge');
+
+  ipcMain.handle('wgc:list', async () => {
+    return await wgc.listWindows();
+  });
+
+  ipcMain.handle('wgc:thumb', async (_e, { hwnd, width, height }) => {
+    return await wgc.getThumbnail(hwnd, width, height);
+  });
+
+  ipcMain.handle('wgc:start', async (_e, { hwnd, options }) => {
+    return await wgc.startCapture(hwnd, options);
+  });
+
+  ipcMain.handle('wgc:stop', async (_e, { id }) => {
+    wgc.stopCapture(id);
+  });
+
+  ipcMain.handle('wgc:position', async (_e, { hwnd, x, y, width, height, topmost, borderless }) => {
+    return await wgc.positionWindow(hwnd, x, y, width, height, topmost, borderless);
   });
 
   // Popout capture registry handlers

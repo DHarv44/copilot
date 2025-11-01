@@ -127,10 +127,20 @@ export class ToggleSwitch extends BaseControl {
 
   handleClick(): void {
     this.toggle();
+
+    // Send SimConnect K-event
+    if (window.cmd) {
+      const id = window.cmd.send({ type: 'toggle', switch: this.id, state: this.isOn });
+      console.debug('→ Toggle', this.id, this.isOn ? 'ON' : 'OFF', id);
+    }
   }
 
   toggle(): void {
-    this.isOn = !this.isOn;
+    this.setVisualState(!this.isOn);
+  }
+
+  setVisualState(on: boolean): void {
+    this.isOn = on;
     this.group.setAttribute('data-state', this.isOn ? 'on' : 'off');
     this.updateLeverRotation();
     this.updateLabelColor();
@@ -139,7 +149,7 @@ export class ToggleSwitch extends BaseControl {
   private updateLeverRotation(): void {
     if (!this.leverPivot) return;
 
-    // OFF = -15°, ON = -150°
+    // ON = -165° (up), OFF = -15° (down)
     const angle = this.isOn ? -165 : -15;
 
     // Update all child elements with rotation transform
@@ -171,7 +181,7 @@ export class ToggleSwitch extends BaseControl {
 
   setState(on: boolean): void {
     if (this.isOn !== on) {
-      this.toggle();
+      this.setVisualState(on);
     }
   }
 

@@ -1,0 +1,174 @@
+/**
+ * G1000 NXi H-Events mapping
+ * Based on Working Title G1000 NXi AS1000 events
+ * Source: FSUIPC7 HvarFiles/G1000.hvar
+ */
+
+export const G1000_EVENTS = {
+  // PFD (Primary Flight Display) Controls
+  PFD: {
+    // Soft Keys (12 buttons along bottom of PFD)
+    SOFTKEY_1: 'AS1000_PFD_SOFTKEYS_1',
+    SOFTKEY_2: 'AS1000_PFD_SOFTKEYS_2',
+    SOFTKEY_3: 'AS1000_PFD_SOFTKEYS_3',
+    SOFTKEY_4: 'AS1000_PFD_SOFTKEYS_4',
+    SOFTKEY_5: 'AS1000_PFD_SOFTKEYS_5',
+    SOFTKEY_6: 'AS1000_PFD_SOFTKEYS_6',
+    SOFTKEY_7: 'AS1000_PFD_SOFTKEYS_7',
+    SOFTKEY_8: 'AS1000_PFD_SOFTKEYS_8',
+    SOFTKEY_9: 'AS1000_PFD_SOFTKEYS_9',
+    SOFTKEY_10: 'AS1000_PFD_SOFTKEYS_10',
+    SOFTKEY_11: 'AS1000_PFD_SOFTKEYS_11',
+    SOFTKEY_12: 'AS1000_PFD_SOFTKEYS_12',
+
+    // Navigation Buttons
+    DIRECTTO: 'AS1000_PFD_DIRECTTO',
+    FPL: 'AS1000_PFD_FPL_Push',
+    PROC: 'AS1000_PFD_PROC_Push',
+    MENU: 'AS1000_PFD_MENU_Push',
+    CLR: 'AS1000_PFD_CLR',
+    CLR_LONG: 'AS1000_PFD_CLR_Long',
+    ENT: 'AS1000_PFD_ENT_Push',
+
+    // FMS Knobs
+    FMS_UPPER_INC: 'AS1000_PFD_FMS_Upper_INC',
+    FMS_UPPER_DEC: 'AS1000_PFD_FMS_Upper_DEC',
+    FMS_UPPER_PUSH: 'AS1000_PFD_FMS_Upper_PUSH',
+    FMS_LOWER_INC: 'AS1000_PFD_FMS_Lower_INC',
+    FMS_LOWER_DEC: 'AS1000_PFD_FMS_Lower_DEC',
+
+    // Range/Zoom
+    RANGE_INC: 'AS1000_PFD_RANGE_INC',
+    RANGE_DEC: 'AS1000_PFD_RANGE_DEC',
+
+    // Joystick/Pan
+    JOYSTICK_PUSH: 'AS1000_PFD_JOYSTICK_PUSH',
+    JOYSTICK_UP: 'AS1000_PFD_JOYSTICK_UP',
+    JOYSTICK_DOWN: 'AS1000_PFD_JOYSTICK_DOWN',
+    JOYSTICK_LEFT: 'AS1000_PFD_JOYSTICK_LEFT',
+    JOYSTICK_RIGHT: 'AS1000_PFD_JOYSTICK_RIGHT',
+
+    // NAV/COM Controls
+    NAV_SWITCH: 'AS1000_PFD_NAV_Switch',
+    NAV_LARGE_INC: 'AS1000_PFD_NAV_Large_INC',
+    NAV_LARGE_DEC: 'AS1000_PFD_NAV_Large_DEC',
+    NAV_SMALL_INC: 'AS1000_PFD_NAV_Small_INC',
+    NAV_SMALL_DEC: 'AS1000_PFD_NAV_Small_DEC',
+    NAV_PUSH: 'AS1000_PFD_NAV_Push',
+
+    COM_SWITCH: 'AS1000_PFD_COM_Switch',
+    COM_SWITCH_LONG: 'AS1000_PFD_COM_Switch_Long',
+    COM_LARGE_INC: 'AS1000_PFD_COM_Large_INC',
+    COM_LARGE_DEC: 'AS1000_PFD_COM_Large_DEC',
+    COM_SMALL_INC: 'AS1000_PFD_COM_Small_INC',
+    COM_SMALL_DEC: 'AS1000_PFD_COM_Small_DEC',
+    COM_PUSH: 'AS1000_PFD_COM_Push',
+
+    // Barometer
+    BARO_INC: 'AS1000_PFD_BARO_INC',
+    BARO_DEC: 'AS1000_PFD_BARO_DEC',
+
+    // Course
+    CRS_INC: 'AS1000_PFD_CRS_INC',
+    CRS_DEC: 'AS1000_PFD_CRS_DEC',
+    CRS_PUSH: 'AS1000_PFD_CRS_PUSH',
+
+    // Volume
+    VOL_1_INC: 'AS1000_PFD_VOL_1_INC',
+    VOL_1_DEC: 'AS1000_PFD_VOL_1_DEC',
+    VOL_2_INC: 'AS1000_PFD_VOL_2_INC',
+    VOL_2_DEC: 'AS1000_PFD_VOL_2_DEC',
+  },
+
+  // MFD (Multi-Function Display) Controls
+  MFD: {
+    // Soft Keys (12 buttons along bottom of MFD)
+    SOFTKEY_1: 'AS1000_MFD_SOFTKEYS_1',
+    SOFTKEY_2: 'AS1000_MFD_SOFTKEYS_2',
+    SOFTKEY_3: 'AS1000_MFD_SOFTKEYS_3',
+    SOFTKEY_4: 'AS1000_MFD_SOFTKEYS_4',
+    SOFTKEY_5: 'AS1000_MFD_SOFTKEYS_5',
+    SOFTKEY_6: 'AS1000_MFD_SOFTKEYS_6',
+    SOFTKEY_7: 'AS1000_MFD_SOFTKEYS_7',
+    SOFTKEY_8: 'AS1000_MFD_SOFTKEYS_8',
+    SOFTKEY_9: 'AS1000_MFD_SOFTKEYS_9',
+    SOFTKEY_10: 'AS1000_MFD_SOFTKEYS_10',
+    SOFTKEY_11: 'AS1000_MFD_SOFTKEYS_11',
+    SOFTKEY_12: 'AS1000_MFD_SOFTKEYS_12',
+
+    // Navigation Buttons
+    DIRECTTO: 'AS1000_MFD_DIRECTTO',
+    FPL: 'AS1000_MFD_FPL_Push',
+    PROC: 'AS1000_MFD_PROC_Push',
+    MENU: 'AS1000_MFD_MENU_Push',
+    CLR: 'AS1000_MFD_CLR',
+    CLR_LONG: 'AS1000_MFD_CLR_Long',
+    ENT: 'AS1000_MFD_ENT_Push',
+
+    // FMS Knobs
+    FMS_UPPER_INC: 'AS1000_MFD_FMS_Upper_INC',
+    FMS_UPPER_DEC: 'AS1000_MFD_FMS_Upper_DEC',
+    FMS_UPPER_PUSH: 'AS1000_MFD_FMS_Upper_PUSH',
+    FMS_LOWER_INC: 'AS1000_MFD_FMS_Lower_INC',
+    FMS_LOWER_DEC: 'AS1000_MFD_FMS_Lower_DEC',
+
+    // Range/Zoom
+    RANGE_INC: 'AS1000_MFD_RANGE_INC',
+    RANGE_DEC: 'AS1000_MFD_RANGE_DEC',
+
+    // Joystick/Pan
+    JOYSTICK_PUSH: 'AS1000_MFD_JOYSTICK_PUSH',
+    JOYSTICK_UP: 'AS1000_MFD_JOYSTICK_UP',
+    JOYSTICK_DOWN: 'AS1000_MFD_JOYSTICK_DOWN',
+    JOYSTICK_LEFT: 'AS1000_MFD_JOYSTICK_LEFT',
+    JOYSTICK_RIGHT: 'AS1000_MFD_JOYSTICK_RIGHT',
+
+    // NAV/COM Controls
+    NAV_SWITCH: 'AS1000_MFD_NAV_Switch',
+    NAV_LARGE_INC: 'AS1000_MFD_NAV_Large_INC',
+    NAV_LARGE_DEC: 'AS1000_MFD_NAV_Large_DEC',
+    NAV_SMALL_INC: 'AS1000_MFD_NAV_Small_INC',
+    NAV_SMALL_DEC: 'AS1000_MFD_NAV_Small_DEC',
+    NAV_PUSH: 'AS1000_MFD_NAV_Push',
+
+    COM_SWITCH: 'AS1000_MFD_COM_Switch',
+    COM_SWITCH_LONG: 'AS1000_MFD_COM_Switch_Long',
+    COM_LARGE_INC: 'AS1000_MFD_COM_Large_INC',
+    COM_LARGE_DEC: 'AS1000_MFD_COM_Large_DEC',
+    COM_SMALL_INC: 'AS1000_MFD_COM_Small_INC',
+    COM_SMALL_DEC: 'AS1000_MFD_COM_Small_DEC',
+    COM_PUSH: 'AS1000_MFD_COM_Push',
+
+    // Barometer
+    BARO_INC: 'AS1000_MFD_BARO_INC',
+    BARO_DEC: 'AS1000_MFD_BARO_DEC',
+
+    // Course
+    CRS_INC: 'AS1000_MFD_CRS_INC',
+    CRS_DEC: 'AS1000_MFD_CRS_DEC',
+    CRS_PUSH: 'AS1000_MFD_CRS_PUSH',
+
+    // Volume
+    VOL_1_INC: 'AS1000_MFD_VOL_1_INC',
+    VOL_1_DEC: 'AS1000_MFD_VOL_1_DEC',
+    VOL_2_INC: 'AS1000_MFD_VOL_2_INC',
+    VOL_2_DEC: 'AS1000_MFD_VOL_2_DEC',
+  }
+};
+
+/**
+ * Send a G1000 H-event to MSFS
+ * @param eventName - The H-event name (without H: prefix)
+ * @returns Promise that resolves when event is sent
+ */
+export async function sendG1000Event(eventName: string): Promise<void> {
+  if (!window.cmd) {
+    throw new Error('Command interface not available');
+  }
+
+  const id = window.cmd.send({ type: 'h', event: eventName });
+  console.debug('→ G1000 Event', eventName, id);
+
+  // Wait for ack (handled by window.cmd internally)
+  // The ack will be received via the sim:ack channel
+}

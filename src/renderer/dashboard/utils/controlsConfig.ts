@@ -92,7 +92,21 @@ export const EVENTS: EventsConfig = {
     APR: { on: 'AP_APR_HOLD_ON', off: 'AP_APR_HOLD_OFF', simvar: 'AUTOPILOT APPROACH ACTIVE' },
     ALT: { on: 'AP_ALT_HOLD_ON', off: 'AP_ALT_HOLD_OFF', simvar: 'AUTOPILOT ALTITUDE LOCK' },
     VS: { on: 'AP_VS_HOLD', off: 'AP_VS_HOLD', simvar: 'AUTOPILOT VERTICAL HOLD' },
-    FLC: { on: 'FLIGHT_LEVEL_CHANGE_ON', off: 'FLIGHT_LEVEL_CHANGE_OFF', simvar: 'AUTOPILOT FLIGHT LEVEL CHANGE' }
+    FLC: { on: 'FLIGHT_LEVEL_CHANGE_ON', off: 'FLIGHT_LEVEL_CHANGE_OFF', simvar: 'AUTOPILOT FLIGHT LEVEL CHANGE' },
+    YD: { on: 'YAW_DAMPER_TOGGLE', off: 'YAW_DAMPER_TOGGLE', simvar: 'AUTOPILOT YAW DAMPER' },
+    BC: { on: 'AP_BC_HOLD', off: 'AP_BC_HOLD', simvar: 'AUTOPILOT BACKCOURSE HOLD' },
+    BANK: { on: 'AP_MAX_BANK_INC', off: 'AP_MAX_BANK_INC', simvar: 'AUTOPILOT MAX BANK' },
+    // Lighting toggles
+    LAND: { on: 'LANDING_LIGHTS_ON', off: 'LANDING_LIGHTS_OFF', simvar: 'LIGHT LANDING' },
+    TAXI: { on: 'TOGGLE_TAXI_LIGHTS', off: 'TOGGLE_TAXI_LIGHTS', simvar: 'LIGHT TAXI' },
+    WINGS: { on: 'TOGGLE_WING_LIGHTS', off: 'TOGGLE_WING_LIGHTS', simvar: 'LIGHT WING' },
+    NAV_LIGHT: { on: 'TOGGLE_NAV_LIGHTS', off: 'TOGGLE_NAV_LIGHTS', simvar: 'LIGHT NAV' },
+    RECOG: { on: 'TOGGLE_RECOGNITION_LIGHTS', off: 'TOGGLE_RECOGNITION_LIGHTS', simvar: 'LIGHT RECOGNITION' },
+    STROBE: { on: 'STROBES_ON', off: 'STROBES_OFF', simvar: 'LIGHT STROBE' },
+    TAIL: { on: 'TOGGLE_LOGO_LIGHTS', off: 'TOGGLE_LOGO_LIGHTS', simvar: 'LIGHT LOGO' },
+    BEACON: { on: 'TOGGLE_BEACON_LIGHTS', off: 'TOGGLE_BEACON_LIGHTS', simvar: 'LIGHT BEACON' },
+    // Gear
+    GEAR: { on: 'GEAR_DOWN', off: 'GEAR_UP', simvar: 'GEAR HANDLE POSITION' }
   }
 };
 

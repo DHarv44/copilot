@@ -85,6 +85,7 @@ export class RotaryKnob extends BaseControl {
   }
 
   handleWheel(e: WheelEvent): void {
+    console.log('[RotaryKnob] handleWheel called for', this.id, 'deltaY:', e.deltaY);
     e.preventDefault();
 
     // Determine rotation direction
@@ -92,7 +93,7 @@ export class RotaryKnob extends BaseControl {
     this.rotation += delta;
 
     this.updateRotation();
-    console.debug('Rotary knob', this.id, 'rotated to', this.rotation);
+    console.log('[RotaryKnob] Rotated', this.id, 'to', this.rotation);
   }
 
   private updateRotation(): void {

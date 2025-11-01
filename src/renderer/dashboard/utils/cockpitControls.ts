@@ -2,7 +2,7 @@ import type { AutopilotFlags } from '../../../types/simconnect';
 import { CONTROLS, EVENTS } from './controlsConfig';
 import { PushButton, RotaryKnob, ToggleSwitch, LandingGearLever, RoundPushButton, RectangularToggleSwitch, BaseControl, G1000Bezel, AirManagerBezel, createG1000Instrument, SVGInstrumentLoader } from '../controls';
 import { loadG1000PFD, loadG1000MFD } from '../controls/airmanager/instruments/Generic-Garmin_G1000_NXi';
-import { createPopoutOverlay } from '../controls/airmanager/popoutOverlay';
+import { createPopoutOverlayWGC } from '../controls/airmanager/popoutOverlayWGC';
 
 // Store control instances
 const controlInstances = new Map<string, BaseControl>();
@@ -28,6 +28,15 @@ export async function initializeCockpit(container: HTMLElement): Promise<void> {
   // Event delegation
   svg.addEventListener('click', handleControlClick);
   svg.addEventListener('wheel', handleControlWheel, { passive: false });
+
+  // Listen for SimConnect state updates
+  if (window.sim) {
+    window.sim.onUpdate((msg: any) => {
+      if (msg.type === 'apState' && msg.flags) {
+        syncControlStates(msg.flags);
+      }
+    });
+  }
 }
 
 async function addGradientsAndControls(svg: SVGElement) {
@@ -264,10 +273,12 @@ async function addGradientsAndControls(svg: SVGElement) {
 
     controlsGroup.appendChild(element);
 
-    // Create popout overlay for this G1000 bezel
+    // Create WGC popout overlay for this G1000 bezel (after next frame to ensure DOM is ready)
     const titlePattern = g1000Config.mode === 'PFD' ? /(AS1000|WTG1000|G1000).*PFD/i : /(AS1000|WTG1000|G1000).*MFD/i;
     const keyId = g1000Config.mode === 'PFD' ? 'G1000_PFD' : 'G1000_MFD';
-    createPopoutOverlay(element, keyId, titlePattern);
+    requestAnimationFrame(() => {
+      createPopoutOverlayWGC(element, keyId, titlePattern);
+    });
   }) : [];
 
   // Wait for all controls to render
@@ -312,9 +323,18 @@ function handleControlWheel(e: WheelEvent) {
   if (control instanceof RotaryKnob) {
     control.handleWheel(e);
 
-    // Send SimConnect events for altitude knob
+    // Send SimConnect events for all knobs
     if (id === 'ALT_KNOB') {
-      const command = e.deltaY > 0 ? 'AP_ALT_VAR_DEC' : 'AP_ALT_VAR_INC'; // Scroll down = decrease, scroll up = increase
+      const command = e.deltaY > 0 ? 'AP_ALT_VAR_DEC' : 'AP_ALT_VAR_INC';
+      console.log('[cockpitControls] Sending altitude command:', command);
+      window.cmd.send({ type: 'K', event: command });
+    } else if (id === 'HDG_KNOB') {
+      const command = e.deltaY > 0 ? 'HEADING_BUG_DEC' : 'HEADING_BUG_INC';
+      console.log('[cockpitControls] Sending heading command:', command);
+      window.cmd.send({ type: 'K', event: command });
+    } else if (id === 'IAS_KNOB') {
+      const command = e.deltaY > 0 ? 'AP_SPD_VAR_DEC' : 'AP_SPD_VAR_INC';
+      console.log('[cockpitControls] Sending speed command:', command);
       window.cmd.send({ type: 'K', event: command });
     }
   }
@@ -350,5 +370,48 @@ function updateLabelColor(id: string, isActive: boolean) {
   if (tspan) {
     tspan.setAttribute('fill', color);
     (tspan as any).style.fill = color;
+  }
+}
+
+function syncControlStates(flags: Record<string, any>) {
+  // Sync AP push buttons with their SimVars
+  for (const [key, def] of Object.entries(EVENTS.k)) {
+    if (!def.simvar) continue;
+
+    const control = controlInstances.get(key);
+    if (control instanceof PushButton && def.simvar in flags) {
+      const isActive = !!flags[def.simvar];
+      control.setActive(isActive);
+
+      // Also update background SVG label color
+      updateLabelColor(key, isActive);
+    }
+  }
+
+  // Sync toggle switches with their SimVars
+  const toggleMapping: Record<string, string> = {
+    'LAND': 'LIGHT LANDING',
+    'TAXI': 'LIGHT TAXI',
+    'WINGS': 'LIGHT WING',
+    'NAV': 'LIGHT NAV',
+    'RECOG': 'LIGHT RECOGNITION',
+    'STROBE': 'LIGHT STROBE',
+    'TAIL': 'LIGHT LOGO',
+    'BEACON': 'LIGHT BEACON'
+  };
+
+  for (const [controlId, simvar] of Object.entries(toggleMapping)) {
+    const control = controlInstances.get(controlId);
+    if (control instanceof ToggleSwitch && simvar in flags) {
+      const isOn = !!flags[simvar];
+      control.setVisualState(isOn);
+    }
+  }
+
+  // Sync gear lever
+  const gearControl = controlInstances.get('GEAR');
+  if (gearControl instanceof LandingGearLever && 'GEAR HANDLE POSITION' in flags) {
+    const isDown = !!flags['GEAR HANDLE POSITION'];
+    gearControl.setPosition(isDown ? 'DOWN' : 'UP');
   }
 }

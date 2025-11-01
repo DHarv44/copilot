@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { Dashboard } from './components/Dashboard';
 import { Cockpit } from './components/Cockpit';
 import { AutopilotMonitor } from './components/AutopilotMonitor';
+import { Debug } from './components/Debug';
 import './style.css';
 
-type View = 'sim' | 'cockpit' | 'autopilot';
+type View = 'sim' | 'cockpit' | 'autopilot' | 'debug';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>(() => {
@@ -27,6 +28,9 @@ export default function App() {
       } else if (e.ctrlKey && e.key === '3') {
         e.preventDefault();
         setCurrentView('autopilot');
+      } else if (e.ctrlKey && e.key === '4') {
+        e.preventDefault();
+        setCurrentView('debug');
       }
     };
 
@@ -58,6 +62,13 @@ export default function App() {
         >
           Autopilot Monitor
         </button>
+        <button
+          className={`nav-btn ${currentView === 'debug' ? 'active' : ''}`}
+          onClick={() => setCurrentView('debug')}
+          data-view="debug"
+        >
+          Debug
+        </button>
       </nav>
 
       <div className={`view ${currentView === 'sim' ? 'active' : ''}`} id="view-sim">
@@ -70,6 +81,10 @@ export default function App() {
 
       <div className={`view ${currentView === 'autopilot' ? 'active' : ''}`} id="view-autopilot">
         <AutopilotMonitor />
+      </div>
+
+      <div className={`view ${currentView === 'debug' ? 'active' : ''}`} id="view-debug">
+        <Debug />
       </div>
     </>
   );

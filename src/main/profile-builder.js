@@ -55,7 +55,7 @@ function findAircraftByTitle(title) {
 function walkForAircraft(baseDir, targetTitle) {
   try {
     const packages = fs.readdirSync(baseDir, { withFileTypes: true });
-    console.log('[profile] scanning', packages.length, 'packages in', baseDir);
+    // console.log('[profile] scanning', packages.length, 'packages in', baseDir);
 
     for (const pkg of packages) {
       if (!pkg.isDirectory()) continue;
@@ -71,7 +71,7 @@ function walkForAircraft(baseDir, targetTitle) {
         const aircraftCfgPath = path.join(simObjectsDir, ac.name, 'aircraft.cfg');
         if (!fs.existsSync(aircraftCfgPath)) continue;
 
-        console.log('[profile] checking', aircraftCfgPath);
+        // console.log('[profile] checking', aircraftCfgPath);
         const result = parseAircraftCfg(aircraftCfgPath, targetTitle);
         if (result) {
           console.log('[profile] ✓ MATCH found in', ac.name);

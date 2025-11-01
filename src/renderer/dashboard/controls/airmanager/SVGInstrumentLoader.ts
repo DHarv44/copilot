@@ -172,13 +172,13 @@ export class SVGInstrumentLoader {
       'nose_up': { type: 'h-event', event: `AS1000_${mode}_NOSE_UP` },
       'nose_down': { type: 'h-event', event: `AS1000_${mode}_NOSE_DOWN` },
 
-      // Right side control buttons
-      'clr-9-1': { type: 'h-event', event: `AS1000_${mode}_CLR` },
-      'clr-9': { type: 'h-event', event: `AS1000_${mode}_ENT` },
-      'clr-1': { type: 'h-event', event: `AS1000_${mode}_FPL_Push` },
-      'clr-2': { type: 'h-event', event: `AS1000_${mode}_PROC_Push` },
-      'clr-3': { type: 'h-event', event: `AS1000_${mode}_DIRECTTO_Push` },
-      'clr-4': { type: 'h-event', event: `AS1000_${mode}_MENU_Push` }
+      // FMS control buttons
+      'clr': { type: 'h-event', event: `AS1000_${mode}_CLR` },
+      'ent': { type: 'h-event', event: `AS1000_${mode}_ENT` },
+      'fpl': { type: 'h-event', event: `AS1000_${mode}_FPL_Push` },
+      'proc': { type: 'h-event', event: `AS1000_${mode}_PROC_Push` },
+      'directto': { type: 'h-event', event: `AS1000_${mode}_DIRECTTO_Push` },
+      'menu': { type: 'h-event', event: `AS1000_${mode}_MENU_Push` }
     };
 
     // Handle softkeys (softkey_1, softkey_1-8, etc.)
@@ -325,13 +325,13 @@ export class SVGInstrumentLoader {
       'nav_swap': `${basePath}/channel_swap_pressed.png`,
       'com_swap': `${basePath}/channel_swap_pressed.png`,
 
-      // Right side control buttons
-      'clr-9-1': `${basePath}/clr_pressed.png`,
-      'clr-9': `${basePath}/ent_pressed.png`,
-      'clr-1': `${basePath}/fpl_pressed.png`,
-      'clr-2': `${basePath}/proc_pressed.png`,
-      'clr-3': `${basePath}/dir_pressed.png`,
-      'clr-4': `${basePath}/menu_pressed.png`,
+      // FMS control buttons
+      'clr': `${basePath}/clr_pressed.png`,
+      'ent': `${basePath}/ent_pressed.png`,
+      'fpl': `${basePath}/fpl_pressed.png`,
+      'proc': `${basePath}/proc_pressed.png`,
+      'directto': `${basePath}/dir_pressed.png`,
+      'menu': `${basePath}/menu_pressed.png`,
 
       // Softkeys - all use same pressed image
       'softkey_1': `${basePath}/softkey_pressed.png`,

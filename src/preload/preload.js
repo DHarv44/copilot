@@ -2,6 +2,9 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 console.log('[preload] popcap bridge ready (IPC mode)');
 
+// Load WGC bridge
+require('./wgc');
+
 const genId = () => Math.random().toString(36).slice(2);
 
 contextBridge.exposeInMainWorld('api', {
@@ -26,7 +29,7 @@ contextBridge.exposeInMainWorld('cmd', {
 });
 
 contextBridge.exposeInMainWorld('sim', {
-  onUpdate: (cb) => ipcRenderer.on('bus:msg', (_e, m) => cb(m))
+  onUpdate: (cb) => ipcRenderer.on('sim:update', (_e, m) => cb(m))
 });
 
 contextBridge.exposeInMainWorld('navboard', {

@@ -1,0 +1,42 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "CS_BasicConsole/1.0.0": {
+        "dependencies": {
+          "WASimClient_CLI": "1.0.0"
+        },
+        "runtime": {
+          "CS_BasicConsole.dll": {}
+        }
+      },
+      "WASimClient_CLI/1.0.0": {
+        "dependencies": {
+          "WASimClient": "1.0.0"
+        },
+        "runtime": {
+          "WASimCommander.WASimClient.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": ""
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "CS_BasicConsole/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "WASimClient_CLI/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

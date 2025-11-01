@@ -39,33 +39,68 @@ const EV = {
   ALT_TOGGLE: 0x1115,
   FLC_TOGGLE: 0x1116,
   YD_TOGGLE: 0x1117,
+  // Knob increment/decrement events
+  AP_ALT_VAR_INC: 0x1118,
+  AP_ALT_VAR_DEC: 0x1119,
+  HEADING_BUG_INC: 0x111A,
+  HEADING_BUG_DEC: 0x111B,
+  AP_SPD_VAR_INC: 0x111C,
+  AP_SPD_VAR_DEC: 0x111D,
+  // Lighting events
+  LANDING_ON: 0x111E,
+  LANDING_OFF: 0x111F,
+  TAXI: 0x1120,
+  WINGS: 0x1121,
+  NAV_LIGHT: 0x1122,
+  RECOG: 0x1123,
+  STROBE_ON: 0x1124,
+  STROBE_OFF: 0x1125,
+  TAIL: 0x1126,
+  BEACON: 0x1127,
+  GEAR_UP: 0x1128,
+  GEAR_DOWN: 0x1129,
+  BANK_INC: 0x112A,
 };
 
 // AP K-event group and SimVar definitions
 const GROUP_K = 1001;
 const DEF_AP = 10, REQ_AP = 10;
 const AP_VARS = [
+  // Core autopilot modes (available in most aircraft)
   { name: 'AUTOPILOT MASTER', unit: 'Bool', type: 'INT32' },
   { name: 'AUTOPILOT FLIGHT DIRECTOR ACTIVE', unit: 'Bool', type: 'INT32' },
   { name: 'AUTOPILOT HEADING LOCK', unit: 'Bool', type: 'INT32' },
   { name: 'AUTOPILOT NAV1 LOCK', unit: 'Bool', type: 'INT32' },
-  { name: 'AUTOPILOT NAV SELECTED', unit: 'Bool', type: 'INT32' },
   { name: 'AUTOPILOT APPROACH ACTIVE', unit: 'Bool', type: 'INT32' },
   { name: 'AUTOPILOT ALTITUDE LOCK', unit: 'Bool', type: 'INT32' },
   { name: 'AUTOPILOT ALTITUDE LOCK VAR', unit: 'feet', type: 'FLOAT64' },
   { name: 'AUTOPILOT VERTICAL HOLD', unit: 'Bool', type: 'INT32' },
   { name: 'AUTOPILOT BACKCOURSE HOLD', unit: 'Bool', type: 'INT32' },
   { name: 'AUTOPILOT YAW DAMPER', unit: 'Bool', type: 'INT32' },
-  { name: 'AUTOPILOT AIRSPEED HOLD', unit: 'Bool', type: 'INT32' },
-  { name: 'AUTOPILOT MACH HOLD', unit: 'Bool', type: 'INT32' },
-  { name: 'AUTOPILOT FLIGHT LEVEL CHANGE', unit: 'Bool', type: 'INT32' },
-  { name: 'AUTOPILOT PITCH HOLD', unit: 'Bool', type: 'INT32' },
-  { name: 'AUTOPILOT GLIDESLOPE HOLD', unit: 'Bool', type: 'INT32' },
-  { name: 'AUTOPILOT THROTTLE ARM', unit: 'Bool', type: 'INT32' },
-  { name: 'AUTOPILOT TAKEOFF POWER ACTIVE', unit: 'Bool', type: 'INT32' },
-  { name: 'AUTOPILOT WING LEVELER', unit: 'Bool', type: 'INT32' },
-  { name: 'GPS DRIVES NAV1', unit: 'Bool', type: 'INT32' },
-  { name: 'GPS WP CROSS TRK', unit: 'nautical miles', type: 'FLOAT64' }
+  // Removed: AUTOPILOT NAV SELECTED - not universal
+  // Removed: AUTOPILOT AIRSPEED HOLD - not in all GA aircraft
+  // Removed: AUTOPILOT MACH HOLD - jets only
+  // Removed: AUTOPILOT FLIGHT LEVEL CHANGE - not universal
+  // Removed: AUTOPILOT PITCH HOLD - not universal
+  // Removed: AUTOPILOT GLIDESLOPE HOLD - redundant with APPROACH ACTIVE
+  // Removed: AUTOPILOT THROTTLE ARM - not in GA aircraft
+  // Removed: AUTOPILOT TAKEOFF POWER ACTIVE - not in GA aircraft
+  // Removed: AUTOPILOT WING LEVELER - not universal
+  // Removed: GPS DRIVES NAV1 - G1000 specific
+  // Removed: GPS WP CROSS TRK - G1000 specific
+
+  // Lighting states (universal)
+  { name: 'LIGHT LANDING', unit: 'Bool', type: 'INT32' },
+  { name: 'LIGHT TAXI', unit: 'Bool', type: 'INT32' },
+  { name: 'LIGHT NAV', unit: 'Bool', type: 'INT32' },
+  { name: 'LIGHT STROBE', unit: 'Bool', type: 'INT32' },
+  { name: 'LIGHT BEACON', unit: 'Bool', type: 'INT32' },
+  // Removed: LIGHT WING - not all aircraft have wing lights
+  // Removed: LIGHT RECOGNITION - not universal
+  // Removed: LIGHT LOGO - not universal
+
+  // Gear state (universal)
+  { name: 'GEAR HANDLE POSITION', unit: 'Bool', type: 'INT32' }
 ];
 
 let handle = null;
@@ -184,7 +219,7 @@ function connect() {
           return;
         }
 
-        LOG('>>> EVENT:', JSON.stringify(ev));
+        // LOG('>>> EVENT:', JSON.stringify(ev)); // Disabled - too verbose
         if (ev.clientEventId === EVT_AIRCRAFT_LOADED) {
           state.lastLoadedAt = Date.now();
           state.titleResolved = false;
@@ -258,6 +293,27 @@ function connect() {
         handle.mapClientEventToSimEvent(EV.ALT_TOGGLE, 'AP_ALT_HOLD');
         handle.mapClientEventToSimEvent(EV.FLC_TOGGLE, 'FLIGHT_LEVEL_CHANGE');
         handle.mapClientEventToSimEvent(EV.YD_TOGGLE, 'YAW_DAMPER_TOGGLE');
+        // Knob increment/decrement events
+        handle.mapClientEventToSimEvent(EV.AP_ALT_VAR_INC, 'AP_ALT_VAR_INC');
+        handle.mapClientEventToSimEvent(EV.AP_ALT_VAR_DEC, 'AP_ALT_VAR_DEC');
+        handle.mapClientEventToSimEvent(EV.HEADING_BUG_INC, 'HEADING_BUG_INC');
+        handle.mapClientEventToSimEvent(EV.HEADING_BUG_DEC, 'HEADING_BUG_DEC');
+        handle.mapClientEventToSimEvent(EV.AP_SPD_VAR_INC, 'AP_SPD_VAR_INC');
+        handle.mapClientEventToSimEvent(EV.AP_SPD_VAR_DEC, 'AP_SPD_VAR_DEC');
+        // Lighting events
+        handle.mapClientEventToSimEvent(EV.LANDING_ON, 'LANDING_LIGHTS_ON');
+        handle.mapClientEventToSimEvent(EV.LANDING_OFF, 'LANDING_LIGHTS_OFF');
+        handle.mapClientEventToSimEvent(EV.TAXI, 'TOGGLE_TAXI_LIGHTS');
+        handle.mapClientEventToSimEvent(EV.WINGS, 'TOGGLE_WING_LIGHTS');
+        handle.mapClientEventToSimEvent(EV.NAV_LIGHT, 'TOGGLE_NAV_LIGHTS');
+        handle.mapClientEventToSimEvent(EV.RECOG, 'TOGGLE_RECOGNITION_LIGHTS');
+        handle.mapClientEventToSimEvent(EV.STROBE_ON, 'STROBES_ON');
+        handle.mapClientEventToSimEvent(EV.STROBE_OFF, 'STROBES_OFF');
+        handle.mapClientEventToSimEvent(EV.TAIL, 'TOGGLE_LOGO_LIGHTS');
+        handle.mapClientEventToSimEvent(EV.BEACON, 'TOGGLE_BEACON_LIGHTS');
+        handle.mapClientEventToSimEvent(EV.GEAR_UP, 'GEAR_UP');
+        handle.mapClientEventToSimEvent(EV.GEAR_DOWN, 'GEAR_DOWN');
+        handle.mapClientEventToSimEvent(EV.BANK_INC, 'AP_MAX_BANK_INC');
 
         // Add to notification group
         Object.values(EV).forEach(id => {
@@ -445,6 +501,27 @@ function kIdByName(name) {
     'FLIGHT_LEVEL_CHANGE_OFF': EV.FLC_OFF,
     'FLIGHT_LEVEL_CHANGE': EV.FLC_TOGGLE,
     'YAW_DAMPER_TOGGLE': EV.YD_TOGGLE,
+    // Knob increment/decrement events
+    'AP_ALT_VAR_INC': EV.AP_ALT_VAR_INC,
+    'AP_ALT_VAR_DEC': EV.AP_ALT_VAR_DEC,
+    'HEADING_BUG_INC': EV.HEADING_BUG_INC,
+    'HEADING_BUG_DEC': EV.HEADING_BUG_DEC,
+    'AP_SPD_VAR_INC': EV.AP_SPD_VAR_INC,
+    'AP_SPD_VAR_DEC': EV.AP_SPD_VAR_DEC,
+    // Lighting events
+    'LANDING_LIGHTS_ON': EV.LANDING_ON,
+    'LANDING_LIGHTS_OFF': EV.LANDING_OFF,
+    'TOGGLE_TAXI_LIGHTS': EV.TAXI,
+    'TOGGLE_WING_LIGHTS': EV.WINGS,
+    'TOGGLE_NAV_LIGHTS': EV.NAV_LIGHT,
+    'TOGGLE_RECOGNITION_LIGHTS': EV.RECOG,
+    'STROBES_ON': EV.STROBE_ON,
+    'STROBES_OFF': EV.STROBE_OFF,
+    'TOGGLE_LOGO_LIGHTS': EV.TAIL,
+    'TOGGLE_BEACON_LIGHTS': EV.BEACON,
+    'GEAR_UP': EV.GEAR_UP,
+    'GEAR_DOWN': EV.GEAR_DOWN,
+    'AP_MAX_BANK_INC': EV.BANK_INC,
   };
   return nameToId[name] || null;
 }
@@ -549,3 +626,15 @@ exports.pressVS = () => press('VS', H.VS, 'AP_VS_HOLD');
 exports.pressFLC = () => press('FLC', H.FLC, 'FLIGHT_LEVEL_CHANGE');
 exports.pressVNAV = () => press('VNAV', H.VNAV, 'AP_NAV1_HOLD');
 exports.pressYD = () => press('YD', H.YD, 'YAW_DAMPER_TOGGLE');
+exports.pressBANK = () => exports.sendK('AP_MAX_BANK_INC');
+
+// Toggle functions for lighting and gear
+exports.toggleLAND = (state) => exports.sendK(state ? 'LANDING_LIGHTS_ON' : 'LANDING_LIGHTS_OFF');
+exports.toggleTAXI = () => exports.sendK('TOGGLE_TAXI_LIGHTS');
+exports.toggleWINGS = () => exports.sendK('TOGGLE_WING_LIGHTS');
+exports.toggleNAV = () => exports.sendK('TOGGLE_NAV_LIGHTS');
+exports.toggleRECOG = () => exports.sendK('TOGGLE_RECOGNITION_LIGHTS');
+exports.toggleSTROBE = (state) => exports.sendK(state ? 'STROBES_ON' : 'STROBES_OFF');
+exports.toggleTAIL = () => exports.sendK('TOGGLE_LOGO_LIGHTS');
+exports.toggleBEACON = () => exports.sendK('TOGGLE_BEACON_LIGHTS');
+exports.toggleGEAR = (state) => exports.sendK(state ? 'GEAR_DOWN' : 'GEAR_UP');

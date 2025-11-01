@@ -1,0 +1,933 @@
+<!-- HTML header for doxygen 1.9.4-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WASimCommander: WASimCommander::CLI::Structs::DataRequest Struct Reference</title>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+  $(function() { init_search(); });
+/* @license-end */
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init();
+    DoxygenAwesomeParagraphLink.init();
+</script>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="Logo.png" title="WASimCommander - Remote access to the Microsoft Flight Simulator 2020 &amp; 2024 Gauge API."/></td>
+  <td id="projectalign">
+   <div id="projectname"><!-- WASimCommander --><span id="projectnumber">&#160;v1.3.2.0</span>
+   </div>
+  </td>
+    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect"                onmouseover="return searchBox.OnSearchSelectShow()"                onmouseout="return searchBox.OnSearchSelectHide()">&#160;</span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.svg" alt=""/></a>
+          </span>
+        </div>
+</td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/mpaperno/WASimCommander" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z" fill="url(#gradient)"></path>
+    <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+    <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+    <linearGradient id="gradient" x1="0.5" x2="0.5" y1="0" y2="1">
+        <stop class="first-stop" offset="0%"></stop>
+        <stop class="last-stop" offset="100%"></stop>
+    </linearGradient>
+    </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<!-- Generated by Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('struct_w_a_sim_commander_1_1_c_l_i_1_1_structs_1_1_data_request.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="struct_w_a_sim_commander_1_1_c_l_i_1_1_structs_1_1_data_request-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">WASimCommander::CLI::Structs::DataRequest Struct Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Structure for value update subscription requests.  
+ <a href="#details">More...</a></p>
+
+<p><code>#include &quot;<a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>&quot;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:acc96e39498783b15181303689345dd0e" id="r_acc96e39498783b15181303689345dd0e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc96e39498783b15181303689345dd0e">DataRequest</a> ()</td></tr>
+<tr class="memdesc:acc96e39498783b15181303689345dd0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. Properties must be set to valid values, either later or inline, eg. <code>new <a class="el" href="#acc96e39498783b15181303689345dd0e" title="Default constructor. Properties must be set to valid values, either later or inline,...">DataRequest()</a> { requestId: 1, requestType: RequestType::Named, ...}</code>.  <br /></td></tr>
+<tr class="separator:acc96e39498783b15181303689345dd0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20fe0d72902f78ea4c352244666c7d4e" id="r_a20fe0d72902f78ea4c352244666c7d4e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20fe0d72902f78ea4c352244666c7d4e">DataRequest</a> (UInt32 requestId, Char variableType, String ^ variableName, UInt32 valueSize)</td></tr>
+<tr class="memdesc:a20fe0d72902f78ea4c352244666c7d4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a request for a named variable (<code>requestType = RequestType::Named</code>) with default update period on every <code>UpdatePeriod.Tick</code>.  <br /></td></tr>
+<tr class="separator:a20fe0d72902f78ea4c352244666c7d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73ff0229014e825f42aea0398dd4c35f" id="r_a73ff0229014e825f42aea0398dd4c35f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73ff0229014e825f42aea0398dd4c35f">DataRequest</a> (UInt32 requestId, Char variableType, String ^ variableName, UInt32 valueSize, UpdatePeriod period, UInt32 interval, float deltaEpsilon)</td></tr>
+<tr class="memdesc:a73ff0229014e825f42aea0398dd4c35f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a request for a named variable (<code>requestType = RequestType::Named</code>) with given update period, interval, and epsilon values.  <br /></td></tr>
+<tr class="separator:a73ff0229014e825f42aea0398dd4c35f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affbe49d4f3e4b566d7df5c0603989058" id="r_affbe49d4f3e4b566d7df5c0603989058"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affbe49d4f3e4b566d7df5c0603989058">DataRequest</a> (UInt32 requestId, String ^ simVarName, String ^ unitName, Byte simVarIndex, UInt32 valueSize)</td></tr>
+<tr class="memdesc:affbe49d4f3e4b566d7df5c0603989058"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a request for a named Simulator Variable (<code>requestType = RequestType::Named</code> and &lsquo;varTypePrefix = 'A&rsquo;<code>) with default update period on every</code>UpdatePeriod.Tick`.  <br /></td></tr>
+<tr class="separator:affbe49d4f3e4b566d7df5c0603989058"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aead425ea43dc4ecca2684fe490d46b43" id="r_aead425ea43dc4ecca2684fe490d46b43"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aead425ea43dc4ecca2684fe490d46b43">DataRequest</a> (UInt32 requestId, String ^ simVarName, String ^ unitName, Byte simVarIndex, UInt32 valueSize, UpdatePeriod period, UInt32 interval, float deltaEpsilon)</td></tr>
+<tr class="memdesc:aead425ea43dc4ecca2684fe490d46b43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a request for a named Simulator Variable (<code>requestType = RequestType::Named</code> and &lsquo;varTypePrefix = 'A&rsquo;`) with given update period, interval, and epsilon values.  <br /></td></tr>
+<tr class="separator:aead425ea43dc4ecca2684fe490d46b43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6edea72a6c3faf228b74b75c2c8b6ff" id="r_ab6edea72a6c3faf228b74b75c2c8b6ff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6edea72a6c3faf228b74b75c2c8b6ff">DataRequest</a> (UInt32 requestId, CalcResultType resultType, String ^ calculatorCode, UInt32 valueSize)</td></tr>
+<tr class="memdesc:ab6edea72a6c3faf228b74b75c2c8b6ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a calculator code request (<code>requestType = RequestType::Calculated</code>) with default update period on every <code>UpdatePeriod.Tick</code>.  <br /></td></tr>
+<tr class="separator:ab6edea72a6c3faf228b74b75c2c8b6ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac77871164ec9d82ec894f57fd245bdf2" id="r_ac77871164ec9d82ec894f57fd245bdf2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac77871164ec9d82ec894f57fd245bdf2">DataRequest</a> (UInt32 requestId, CalcResultType resultType, String ^ calculatorCode, UInt32 valueSize, UpdatePeriod period, UInt32 interval, float deltaEpsilon)</td></tr>
+<tr class="memdesc:ac77871164ec9d82ec894f57fd245bdf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a calculator code request (<code>requestType = RequestType::Calculated</code>) with given update period, interval, and epsilon values..  <br /></td></tr>
+<tr class="separator:ac77871164ec9d82ec894f57fd245bdf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52a33ff42cb529a181dd91dc938fb042" id="r_a52a33ff42cb529a181dd91dc938fb042"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a52a33ff42cb529a181dd91dc938fb042">DataRequest</a> (UInt32 requestId, CalcResultType resultType, String ^ calculatorCode)</td></tr>
+<tr class="memdesc:a52a33ff42cb529a181dd91dc938fb042"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a calculator code request (<code>requestType = RequestType::Calculated</code>) with default update period on every <code>UpdatePeriod.Tick</code>.  <br /></td></tr>
+<tr class="separator:a52a33ff42cb529a181dd91dc938fb042"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06354741d44fc25a4653cb2288a7995b" id="r_a06354741d44fc25a4653cb2288a7995b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a06354741d44fc25a4653cb2288a7995b">DataRequest</a> (UInt32 requestId, CalcResultType resultType, String ^ calculatorCode, UpdatePeriod period, UInt32 interval, float deltaEpsilon)</td></tr>
+<tr class="memdesc:a06354741d44fc25a4653cb2288a7995b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a calculator code request (<code>requestType = RequestType::Calculated</code>) with given update period, interval, and epsilon values..  <br /></td></tr>
+<tr class="separator:a06354741d44fc25a4653cb2288a7995b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac375cb30973fef8b35f0ccc26c0085af" id="r_ac375cb30973fef8b35f0ccc26c0085af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac375cb30973fef8b35f0ccc26c0085af">setNameOrCode</a> (String ^ nameOrCode)</td></tr>
+<tr class="memdesc:ac375cb30973fef8b35f0ccc26c0085af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <code>nameOrCode</code> member using a <code>string</code> type value.  <br /></td></tr>
+<tr class="separator:ac375cb30973fef8b35f0ccc26c0085af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90b77a1ce2ecd9e50098c09cb01decbf" id="r_a90b77a1ce2ecd9e50098c09cb01decbf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90b77a1ce2ecd9e50098c09cb01decbf">setUnitName</a> (String ^ unitName)</td></tr>
+<tr class="memdesc:a90b77a1ce2ecd9e50098c09cb01decbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <code>unitName</code> member using a <code>string</code> type value.  <br /></td></tr>
+<tr class="separator:a90b77a1ce2ecd9e50098c09cb01decbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c17f26d273db9fd02e99dc75fdf7248" id="r_a2c17f26d273db9fd02e99dc75fdf7248"><td class="memItemLeft" align="right" valign="top">String ^&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c17f26d273db9fd02e99dc75fdf7248">ToString</a> () override</td></tr>
+<tr class="memdesc:a2c17f26d273db9fd02e99dc75fdf7248"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serializes this <code><a class="el" href="struct_w_a_sim_commander_1_1_c_l_i_1_1_structs_1_1_data_request.html" title="Structure for value update subscription requests.">DataRequest</a></code> to a string for debugging purposes.  <br /></td></tr>
+<tr class="separator:a2c17f26d273db9fd02e99dc75fdf7248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a93c407d89bc24a17d24ce1ba982a9a2a" id="r_a93c407d89bc24a17d24ce1ba982a9a2a"><td class="memItemLeft" align="right" valign="top">UInt32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93c407d89bc24a17d24ce1ba982a9a2a">requestId</a> {0}</td></tr>
+<tr class="separator:a93c407d89bc24a17d24ce1ba982a9a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a175f99ca5f981e859479395f0c8396dc" id="r_a175f99ca5f981e859479395f0c8396dc"><td class="memItemLeft" align="right" valign="top">UInt32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a175f99ca5f981e859479395f0c8396dc">valueSize</a> {0}</td></tr>
+<tr class="separator:a175f99ca5f981e859479395f0c8396dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ab3a8f4036d66a196a41b0d724ce7ab" id="r_a8ab3a8f4036d66a196a41b0d724ce7ab"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ab3a8f4036d66a196a41b0d724ce7ab">deltaEpsilon</a> {0.0f}</td></tr>
+<tr class="separator:a8ab3a8f4036d66a196a41b0d724ce7ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad73a62f43a30032ce00fca031d66fba2" id="r_ad73a62f43a30032ce00fca031d66fba2"><td class="memItemLeft" align="right" valign="top">UInt32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad73a62f43a30032ce00fca031d66fba2">interval</a> {0}</td></tr>
+<tr class="separator:ad73a62f43a30032ce00fca031d66fba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8825283bd5bf07104394e4e17bf59273" id="r_a8825283bd5bf07104394e4e17bf59273"><td class="memItemLeft" align="right" valign="top">UpdatePeriod&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8825283bd5bf07104394e4e17bf59273">period</a> {UpdatePeriod::Never}</td></tr>
+<tr class="separator:a8825283bd5bf07104394e4e17bf59273"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e5abb86211db133af996aa7c5fe915a" id="r_a0e5abb86211db133af996aa7c5fe915a"><td class="memItemLeft" align="right" valign="top">RequestType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e5abb86211db133af996aa7c5fe915a">requestType</a> {RequestType::None}</td></tr>
+<tr class="separator:a0e5abb86211db133af996aa7c5fe915a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f20eee8663873547a379dac57bfca79" id="r_a8f20eee8663873547a379dac57bfca79"><td class="memItemLeft" align="right" valign="top">CalcResultType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f20eee8663873547a379dac57bfca79">calcResultType</a> {CalcResultType::None}</td></tr>
+<tr class="separator:a8f20eee8663873547a379dac57bfca79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ebc29866bf56bee4c0693725b5578ab" id="r_a7ebc29866bf56bee4c0693725b5578ab"><td class="memItemLeft" align="right" valign="top">Byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ebc29866bf56bee4c0693725b5578ab">simVarIndex</a> {0}</td></tr>
+<tr class="separator:a7ebc29866bf56bee4c0693725b5578ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af300951dd93a80ec232d39f4171bde5a" id="r_af300951dd93a80ec232d39f4171bde5a"><td class="memItemLeft" align="right" valign="top">SByte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af300951dd93a80ec232d39f4171bde5a">varTypePrefix</a> {'L'}</td></tr>
+<tr class="separator:af300951dd93a80ec232d39f4171bde5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cc3015463be349b03afde393b901112" id="r_a6cc3015463be349b03afde393b901112"><td class="memItemLeft" align="right" valign="top">char_array&lt; <a class="el" href="namespace_w_a_sim_commander.html#a84f75f0850267ae220de5e318b3579eb">STRSZ_REQ</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6cc3015463be349b03afde393b901112">nameOrCode</a></td></tr>
+<tr class="separator:a6cc3015463be349b03afde393b901112"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3dd2a6cf2d007e88356c05a9c045ac7" id="r_ac3dd2a6cf2d007e88356c05a9c045ac7"><td class="memItemLeft" align="right" valign="top">char_array&lt; <a class="el" href="namespace_w_a_sim_commander.html#a6dc304c5684a3034ed19294a2a6d7ba7">STRSZ_UNIT</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3dd2a6cf2d007e88356c05a9c045ac7">unitName</a></td></tr>
+<tr class="separator:ac3dd2a6cf2d007e88356c05a9c045ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Structure for value update subscription requests. </p>
+<dl class="section see"><dt>See also</dt><dd>WASimCommander:CommandId::Subscribe command. For full documentation of each field see <code><a class="el" href="struct_w_a_sim_commander_1_1_data_request.html" title="Structure for variable value subscription requests.">WASimCommander::DataRequest</a></code>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00211">211</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="acc96e39498783b15181303689345dd0e" name="acc96e39498783b15181303689345dd0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc96e39498783b15181303689345dd0e">&#9670;&#160;</a></span>DataRequest() <span class="overload">[1/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">WASimCommander::CLI::Structs::DataRequest::DataRequest </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default constructor. Properties must be set to valid values, either later or inline, eg. <code>new <a class="el" href="#acc96e39498783b15181303689345dd0e" title="Default constructor. Properties must be set to valid values, either later or inline,...">DataRequest()</a> { requestId: 1, requestType: RequestType::Named, ...}</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00227">227</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a20fe0d72902f78ea4c352244666c7d4e" name="a20fe0d72902f78ea4c352244666c7d4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20fe0d72902f78ea4c352244666c7d4e">&#9670;&#160;</a></span>DataRequest() <span class="overload">[2/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">WASimCommander::CLI::Structs::DataRequest::DataRequest </td>
+          <td>(</td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>requestId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Char</td>          <td class="paramname"><span class="paramname"><em>variableType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String ^</td>          <td class="paramname"><span class="paramname"><em>variableName</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>valueSize</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a request for a named variable (<code>requestType = RequestType::Named</code>) with default update period on every <code>UpdatePeriod.Tick</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00229">229</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a73ff0229014e825f42aea0398dd4c35f" name="a73ff0229014e825f42aea0398dd4c35f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73ff0229014e825f42aea0398dd4c35f">&#9670;&#160;</a></span>DataRequest() <span class="overload">[3/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">WASimCommander::CLI::Structs::DataRequest::DataRequest </td>
+          <td>(</td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>requestId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Char</td>          <td class="paramname"><span class="paramname"><em>variableType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String ^</td>          <td class="paramname"><span class="paramname"><em>variableName</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>valueSize</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UpdatePeriod</td>          <td class="paramname"><span class="paramname"><em>period</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>interval</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>deltaEpsilon</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a request for a named variable (<code>requestType = RequestType::Named</code>) with given update period, interval, and epsilon values. </p>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00234">234</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="affbe49d4f3e4b566d7df5c0603989058" name="affbe49d4f3e4b566d7df5c0603989058"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affbe49d4f3e4b566d7df5c0603989058">&#9670;&#160;</a></span>DataRequest() <span class="overload">[4/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">WASimCommander::CLI::Structs::DataRequest::DataRequest </td>
+          <td>(</td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>requestId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String ^</td>          <td class="paramname"><span class="paramname"><em>simVarName</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String ^</td>          <td class="paramname"><span class="paramname"><em>unitName</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Byte</td>          <td class="paramname"><span class="paramname"><em>simVarIndex</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>valueSize</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a request for a named Simulator Variable (<code>requestType = RequestType::Named</code> and &lsquo;varTypePrefix = 'A&rsquo;<code>) with default update period on every</code>UpdatePeriod.Tick`. </p>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00239">239</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="aead425ea43dc4ecca2684fe490d46b43" name="aead425ea43dc4ecca2684fe490d46b43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aead425ea43dc4ecca2684fe490d46b43">&#9670;&#160;</a></span>DataRequest() <span class="overload">[5/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">WASimCommander::CLI::Structs::DataRequest::DataRequest </td>
+          <td>(</td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>requestId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String ^</td>          <td class="paramname"><span class="paramname"><em>simVarName</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String ^</td>          <td class="paramname"><span class="paramname"><em>unitName</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Byte</td>          <td class="paramname"><span class="paramname"><em>simVarIndex</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>valueSize</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UpdatePeriod</td>          <td class="paramname"><span class="paramname"><em>period</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>interval</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>deltaEpsilon</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a request for a named Simulator Variable (<code>requestType = RequestType::Named</code> and &lsquo;varTypePrefix = 'A&rsquo;`) with given update period, interval, and epsilon values. </p>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00244">244</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="ab6edea72a6c3faf228b74b75c2c8b6ff" name="ab6edea72a6c3faf228b74b75c2c8b6ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6edea72a6c3faf228b74b75c2c8b6ff">&#9670;&#160;</a></span>DataRequest() <span class="overload">[6/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">WASimCommander::CLI::Structs::DataRequest::DataRequest </td>
+          <td>(</td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>requestId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CalcResultType</td>          <td class="paramname"><span class="paramname"><em>resultType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String ^</td>          <td class="paramname"><span class="paramname"><em>calculatorCode</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>valueSize</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a calculator code request (<code>requestType = RequestType::Calculated</code>) with default update period on every <code>UpdatePeriod.Tick</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00249">249</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="ac77871164ec9d82ec894f57fd245bdf2" name="ac77871164ec9d82ec894f57fd245bdf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac77871164ec9d82ec894f57fd245bdf2">&#9670;&#160;</a></span>DataRequest() <span class="overload">[7/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">WASimCommander::CLI::Structs::DataRequest::DataRequest </td>
+          <td>(</td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>requestId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CalcResultType</td>          <td class="paramname"><span class="paramname"><em>resultType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String ^</td>          <td class="paramname"><span class="paramname"><em>calculatorCode</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>valueSize</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UpdatePeriod</td>          <td class="paramname"><span class="paramname"><em>period</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>interval</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>deltaEpsilon</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a calculator code request (<code>requestType = RequestType::Calculated</code>) with given update period, interval, and epsilon values.. </p>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00254">254</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a52a33ff42cb529a181dd91dc938fb042" name="a52a33ff42cb529a181dd91dc938fb042"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52a33ff42cb529a181dd91dc938fb042">&#9670;&#160;</a></span>DataRequest() <span class="overload">[8/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">WASimCommander::CLI::Structs::DataRequest::DataRequest </td>
+          <td>(</td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>requestId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CalcResultType</td>          <td class="paramname"><span class="paramname"><em>resultType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String ^</td>          <td class="paramname"><span class="paramname"><em>calculatorCode</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a calculator code request (<code>requestType = RequestType::Calculated</code>) with default update period on every <code>UpdatePeriod.Tick</code>. </p>
+<p>This overload, w/out a <code>valueSize</code> argument automatically determines the size based on the <code>resultType</code> argument:</p><ul>
+<li><code>CalcResultType::Double</code> = <code><a class="el" href="namespace_w_a_sim_commander.html#ae21811deaaddf64ed19d040df8592ede" title="64-bit floating-point number">WASimCommander::DATA_TYPE_DOUBLE</a></code></li>
+<li><code>CalcResultType::Integer</code> = <code><a class="el" href="namespace_w_a_sim_commander.html#a3fd2d80e9ebdf7f070877b660e558bcc" title="32-bit integer number (signed or unsigned)">WASimCommander::DATA_TYPE_INT32</a></code></li>
+<li><code>CalcResultType::String</code> = 256 </li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00263">263</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a06354741d44fc25a4653cb2288a7995b" name="a06354741d44fc25a4653cb2288a7995b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06354741d44fc25a4653cb2288a7995b">&#9670;&#160;</a></span>DataRequest() <span class="overload">[9/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">WASimCommander::CLI::Structs::DataRequest::DataRequest </td>
+          <td>(</td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>requestId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CalcResultType</td>          <td class="paramname"><span class="paramname"><em>resultType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String ^</td>          <td class="paramname"><span class="paramname"><em>calculatorCode</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UpdatePeriod</td>          <td class="paramname"><span class="paramname"><em>period</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UInt32</td>          <td class="paramname"><span class="paramname"><em>interval</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>deltaEpsilon</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a calculator code request (<code>requestType = RequestType::Calculated</code>) with given update period, interval, and epsilon values.. </p>
+<p>This overload, w/out a <code>valueSize</code> argument automatically determines the size based on the <code>resultType</code> argument:</p><ul>
+<li><code>CalcResultType::Double</code> = <code><a class="el" href="namespace_w_a_sim_commander.html#ae21811deaaddf64ed19d040df8592ede" title="64-bit floating-point number">WASimCommander::DATA_TYPE_DOUBLE</a></code></li>
+<li><code>CalcResultType::Integer</code> = <code><a class="el" href="namespace_w_a_sim_commander.html#a3fd2d80e9ebdf7f070877b660e558bcc" title="32-bit integer number (signed or unsigned)">WASimCommander::DATA_TYPE_INT32</a></code></li>
+<li><code>CalcResultType::String</code> = 256 </li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00272">272</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac375cb30973fef8b35f0ccc26c0085af" name="ac375cb30973fef8b35f0ccc26c0085af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac375cb30973fef8b35f0ccc26c0085af">&#9670;&#160;</a></span>setNameOrCode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WASimCommander::CLI::Structs::DataRequest::setNameOrCode </td>
+          <td>(</td>
+          <td class="paramtype">String ^</td>          <td class="paramname"><span class="paramname"><em>nameOrCode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the <code>nameOrCode</code> member using a <code>string</code> type value. </p>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00278">278</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a90b77a1ce2ecd9e50098c09cb01decbf" name="a90b77a1ce2ecd9e50098c09cb01decbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b77a1ce2ecd9e50098c09cb01decbf">&#9670;&#160;</a></span>setUnitName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WASimCommander::CLI::Structs::DataRequest::setUnitName </td>
+          <td>(</td>
+          <td class="paramtype">String ^</td>          <td class="paramname"><span class="paramname"><em>unitName</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the <code>unitName</code> member using a <code>string</code> type value. </p>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00284">284</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a2c17f26d273db9fd02e99dc75fdf7248" name="a2c17f26d273db9fd02e99dc75fdf7248"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c17f26d273db9fd02e99dc75fdf7248">&#9670;&#160;</a></span>ToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">String ^ WASimCommander::CLI::Structs::DataRequest::ToString </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serializes this <code><a class="el" href="struct_w_a_sim_commander_1_1_c_l_i_1_1_structs_1_1_data_request.html" title="Structure for value update subscription requests.">DataRequest</a></code> to a string for debugging purposes. </p>
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00290">290</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a93c407d89bc24a17d24ce1ba982a9a2a" name="a93c407d89bc24a17d24ce1ba982a9a2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93c407d89bc24a17d24ce1ba982a9a2a">&#9670;&#160;</a></span>requestId</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UInt32 WASimCommander::CLI::Structs::DataRequest::requestId {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00214">214</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a175f99ca5f981e859479395f0c8396dc" name="a175f99ca5f981e859479395f0c8396dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a175f99ca5f981e859479395f0c8396dc">&#9670;&#160;</a></span>valueSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UInt32 WASimCommander::CLI::Structs::DataRequest::valueSize {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00215">215</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a8ab3a8f4036d66a196a41b0d724ce7ab" name="a8ab3a8f4036d66a196a41b0d724ce7ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ab3a8f4036d66a196a41b0d724ce7ab">&#9670;&#160;</a></span>deltaEpsilon</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float WASimCommander::CLI::Structs::DataRequest::deltaEpsilon {0.0f}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00216">216</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="ad73a62f43a30032ce00fca031d66fba2" name="ad73a62f43a30032ce00fca031d66fba2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad73a62f43a30032ce00fca031d66fba2">&#9670;&#160;</a></span>interval</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UInt32 WASimCommander::CLI::Structs::DataRequest::interval {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00217">217</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a8825283bd5bf07104394e4e17bf59273" name="a8825283bd5bf07104394e4e17bf59273"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8825283bd5bf07104394e4e17bf59273">&#9670;&#160;</a></span>period</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UpdatePeriod WASimCommander::CLI::Structs::DataRequest::period {UpdatePeriod::Never}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00218">218</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a0e5abb86211db133af996aa7c5fe915a" name="a0e5abb86211db133af996aa7c5fe915a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e5abb86211db133af996aa7c5fe915a">&#9670;&#160;</a></span>requestType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RequestType WASimCommander::CLI::Structs::DataRequest::requestType {RequestType::None}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00219">219</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a8f20eee8663873547a379dac57bfca79" name="a8f20eee8663873547a379dac57bfca79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f20eee8663873547a379dac57bfca79">&#9670;&#160;</a></span>calcResultType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CalcResultType WASimCommander::CLI::Structs::DataRequest::calcResultType {CalcResultType::None}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00220">220</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a7ebc29866bf56bee4c0693725b5578ab" name="a7ebc29866bf56bee4c0693725b5578ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ebc29866bf56bee4c0693725b5578ab">&#9670;&#160;</a></span>simVarIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Byte WASimCommander::CLI::Structs::DataRequest::simVarIndex {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00221">221</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="af300951dd93a80ec232d39f4171bde5a" name="af300951dd93a80ec232d39f4171bde5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af300951dd93a80ec232d39f4171bde5a">&#9670;&#160;</a></span>varTypePrefix</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SByte WASimCommander::CLI::Structs::DataRequest::varTypePrefix {'L'}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00222">222</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="a6cc3015463be349b03afde393b901112" name="a6cc3015463be349b03afde393b901112"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cc3015463be349b03afde393b901112">&#9670;&#160;</a></span>nameOrCode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char_array&lt;<a class="el" href="namespace_w_a_sim_commander.html#a84f75f0850267ae220de5e318b3579eb">STRSZ_REQ</a>&gt; WASimCommander::CLI::Structs::DataRequest::nameOrCode</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00223">223</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<a id="ac3dd2a6cf2d007e88356c05a9c045ac7" name="ac3dd2a6cf2d007e88356c05a9c045ac7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3dd2a6cf2d007e88356c05a9c045ac7">&#9670;&#160;</a></span>unitName</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char_array&lt;<a class="el" href="namespace_w_a_sim_commander.html#a6dc304c5684a3034ed19294a2a6d7ba7">STRSZ_UNIT</a>&gt; WASimCommander::CLI::Structs::DataRequest::unitName</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html#l00224">224</a> of file <a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>src/WASimClient_CLI/<a class="el" href="_w_a_sim_client___c_l_i_2structs_8h_source.html">Structs.h</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.9.4-->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespace_w_a_sim_commander.html">WASimCommander</a></li><li class="navelem"><a class="el" href="namespace_w_a_sim_commander_1_1_c_l_i.html">CLI</a></li><li class="navelem"><a class="el" href="namespace_w_a_sim_commander_1_1_c_l_i_1_1_structs.html">Structs</a></li><li class="navelem"><a class="el" href="struct_w_a_sim_commander_1_1_c_l_i_1_1_structs_1_1_data_request.html">DataRequest</a></li>
+    <li class="footer">Generated for WASimCommander &#160;v1.3.2.0 by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

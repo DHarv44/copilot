@@ -1,0 +1,10 @@
+^T:\DEV\COPILOT\NATIVE\WGC-HELPER\BUILD\CMAKEFILES\4D8CCCF23AB7C29918BE7542A4FEBC29\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -ST:/Dev/copilot/native/wgc-helper -BT:/Dev/copilot/native/wgc-helper/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file T:/Dev/copilot/native/wgc-helper/build/wgc-helper.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
